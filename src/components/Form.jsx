@@ -42,7 +42,7 @@ export default function Form() {
 
             if (res.ok) {
                 toast.success('Registro exitoso');
-                setMensaje(`✅ Usuario registrado correctamente. Token: ${data.token}`);
+                // setMensaje(`✅ Usuario registrado correctamente. Token: ${data.token}`);
                 setForm({
                     nombre: '',
                     email: '',
@@ -52,7 +52,7 @@ export default function Form() {
                 });
             } else {
                 toast.error(data.mensaje || data.error || 'Error en el registro');
-                setMensaje(`❌ Error: ${data.mensaje || data.error}`);
+                // setMensaje(`❌ Error: ${data.mensaje || data.error}`);
             }
         } catch (err) {
             toast.error('No se pudo conectar con el servidor');
