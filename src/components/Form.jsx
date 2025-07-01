@@ -91,10 +91,16 @@ export default function Form() {
                         name="nombre"
                         value={form.nombre}
                         onChange={handleChange}
+                        onKeyPress={(e) => {
+                            if (!/^[a-zA-Z\s]*$/.test(e.key)) {
+                                e.preventDefault();
+                            }
+                        }}
                         fullWidth
                         margin="normal"
                         required
                     />
+
                     <TextField
                         label="Email"
                         name="email"
@@ -105,15 +111,22 @@ export default function Form() {
                         margin="normal"
                         required
                     />
+
                     <TextField
                         label="Cédula"
                         name="cedula"
                         value={form.cedula}
                         onChange={handleChange}
+                        onKeyPress={(e) => {
+                            if (!/^\d$/.test(e.key)) {
+                                e.preventDefault();
+                            }
+                        }}
                         fullWidth
                         margin="normal"
                         required
                     />
+
                     <TextField
                         label="Empresa"
                         name="empresa"
@@ -123,15 +136,22 @@ export default function Form() {
                         margin="normal"
                         required
                     />
+
                     <TextField
                         label="Cargo"
                         name="cargo"
                         value={form.cargo}
                         onChange={handleChange}
+                        onKeyPress={(e) => {
+                            if (!/^[a-zA-Z\s]*$/.test(e.key)) {
+                                e.preventDefault();
+                            }
+                        }}
                         fullWidth
                         margin="normal"
                         required
                     />
+
 
                     <Box mt={2}>
                         <Box display="flex" justifyContent="center" mt={2}>
