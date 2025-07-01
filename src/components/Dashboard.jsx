@@ -7,17 +7,17 @@ import {
     IconButton,
     Menu,
     MenuItem,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     Button,
     Typography,
+    DialogContent,
+    DialogTitle,
+    Dialog,
+    DialogActions,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { CheckCircle, Cancel, MoreVert } from '@mui/icons-material';
-import { Snackbar, Alert } from '@mui/material';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = 'https://power11-form.onrender.com/api/registro';
 
@@ -29,10 +29,7 @@ export default function DashboardRegistros() {
     const [registroSeleccionado, setRegistroSeleccionado] = useState(null);
     const [qrDialogOpen, setQrDialogOpen] = useState(false);
     const [qrImage, setQrImage] = useState('');
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [toast, setToast] = useState({ open: false, message: '', severity: 'info' });
     const [enviando, setEnviando] = useState(false);
-
 
     const theme = useTheme();
     const esMovil = useMediaQuery(theme.breakpoints.down('sm'));
@@ -50,14 +47,58 @@ export default function DashboardRegistros() {
             });
     }, []);
 
-    const handleEnvioMasivo = () => {
-        setConfirmOpen(true);
+    // Función para mostrar el toast con confirmación
+    const mostrarConfirmacionToast = () => {
+        const ToastConfirm = ({ closeToast }) => (
+            <div style={{ width: 600, padding: '16px' }}>
+                <Typography variant="body1" gutterBottom>
+                    Se enviará un correo con el código QR únicamente a los usuarios registrados <strong>que aún no han recibido su invitación</strong>.<br />
+                    ¿Deseas continuar con el envío?
+                </Typography>
+                <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => closeToast()}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => {
+                            closeToast();
+                            confirmarEnvioMasivo();
+                        }}
+                        disabled={enviando}
+                    >
+                        Enviar
+                    </Button>
+                </Box>
+            </div>
+        );
+
+
+        toast.info(<ToastConfirm />, {
+            position: "bottom-left",
+            autoClose: false,
+            closeOnClick: false,
+            closeButton: false,
+            draggable: false,
+            style: { minWidth: '600px', maxWidth: '700px' },
+        });
     };
 
-    const confirmarEnvioMasivo = async () => {
-        setConfirmOpen(false);
-        setEnviando(true);
+    // Reemplaza el handler original para que muestre el toast
+    const handleEnvioMasivo = () => {
+        mostrarConfirmacionToast();
+    };
 
+    // Función para enviar correos masivo
+    const confirmarEnvioMasivo = async () => {
+        setEnviando(true);
         try {
             const response = await fetch('https://power11-form.onrender.com/api/registro/registro/enviar-masivo', {
                 method: 'POST',
@@ -65,19 +106,17 @@ export default function DashboardRegistros() {
             const data = await response.json();
 
             if (response.ok) {
-                setToast({ open: true, message: `✅ ${data.mensaje}`, severity: 'success' });
+                toast.success(`✅ ${data.mensaje}`);
             } else {
-                setToast({ open: true, message: `❌ ${data.error || 'No se pudo enviar los correos.'}`, severity: 'error' });
+                toast.error(`❌ ${data.error || 'No se pudo enviar los correos.'}`);
             }
         } catch (error) {
             console.error('Error en el envío masivo:', error);
-            setToast({ open: true, message: '❌ Error al enviar los QR.', severity: 'error' });
+            toast.error(`❌ ${error.message || 'Error al enviar los QR.'}`);
         } finally {
             setEnviando(false);
         }
     };
-
-
 
     const handleMenuClick = (event, registro) => {
         setAnchorEl(event.currentTarget);
@@ -93,7 +132,6 @@ export default function DashboardRegistros() {
         if (!registroSeleccionado?.token) return;
 
         try {
-            // Asumes que ya tienes el QR base64 en cada registro
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=https://power11-form.onrender.com/api/registro/verificar/${registroSeleccionado.token}&size=200x200`;
             setQrImage(qrUrl);
             setQrDialogOpen(true);
@@ -118,12 +156,12 @@ export default function DashboardRegistros() {
     };
 
     const columnasBase = [
-        { field: 'nombre', headerName: 'Nombre', flex: 1 },
-        { field: 'empresa', headerName: 'Empresa', flex: 1 },
+        { field: 'nombre', headerName: 'Nombre', flex: .8 },
+        { field: 'empresa', headerName: 'Empresa', flex: 0.7 },
         {
             field: 'estado',
-            headerName: 'Estado',
-            flex: 1,
+            headerName: 'Ingreso',
+            flex: 0.5,
             renderCell: (params) =>
                 params.value === 'inactivo' ? (
                     <CheckCircle style={{ color: 'green' }} />
@@ -135,8 +173,19 @@ export default function DashboardRegistros() {
 
     const columnasExtras = [
         { field: 'email', headerName: 'Email', flex: 1 },
-        { field: 'cedula', headerName: 'Cédula', flex: 1 },
+        { field: 'cedula', headerName: 'Cédula', flex: 0.8 },
         { field: 'cargo', headerName: 'Cargo', flex: 1 },
+        {
+            field: 'correoEnviado',
+            headerName: 'QR Enviado',
+            flex: 0.75,
+            renderCell: (params) =>
+                params.value ? (
+                    <CheckCircle style={{ color: 'green' }} titleAccess="Correo enviado" />
+                ) : (
+                    <Cancel style={{ color: 'red' }} titleAccess="No enviado" />
+                ),
+        }
     ];
 
     const columnaAcciones = {
@@ -187,11 +236,7 @@ export default function DashboardRegistros() {
                 >
                     {enviando ? 'Enviando...' : 'Enviar QR'}
                 </Button>
-
-
             </Box>
-
-
             <Box flexGrow={1}>
                 <DataGrid
                     rows={registrosFiltrados}
@@ -231,39 +276,7 @@ export default function DashboardRegistros() {
                 </DialogActions>
             </Dialog>
 
-            {/* Confirmación de envío masivo */}
-            <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
-                <DialogTitle>¿Confirmar envío?</DialogTitle>
-                <DialogContent>
-                    <Typography>
-                        Esta acción enviará un correo con código QR a <strong>todos los usuarios registrados</strong>.
-                        ¿Estás seguro de continuar?
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setConfirmOpen(false)}>Cancelar</Button>
-                    <Button onClick={confirmarEnvioMasivo} color="primary" autoFocus>
-                        Enviar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            {/* Notificación toast */}
-            <Snackbar
-                open={toast.open}
-                autoHideDuration={5000}
-                onClose={() => setToast({ ...toast, open: false })}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={() => setToast({ ...toast, open: false })}
-                    severity={toast.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {toast.message}
-                </Alert>
-            </Snackbar>
-
+            <ToastContainer position="bottom-left" autoClose={4000} />
         </Box>
     );
 }
