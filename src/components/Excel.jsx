@@ -66,41 +66,50 @@ const Excel = () => {
   };
 
   const handleSubir = async () => {
-    if (!archivo) {
-      setMensaje('Selecciona un archivo válido primero');
+    if (!vistaPrevia.length) {
+      setMensaje('No hay registros para subir.');
       return;
     }
 
     setCargando(true);
     setMensaje('');
 
-    const formData = new FormData();
-    formData.append('archivo', archivo);
-
     try {
-      const response = await fetch('/api/ingesta-excel', {
+      const response = await fetch('https://power11-form.onrender.com/api/registro/registro/masivo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          vistaPrevia.map((fila) => ({
+            nombre: fila['NOMBRE'],
+            email: fila['EMAIL'],
+            cedula: fila['CEDULA'],
+            empresa: fila['EMPRESA'],
+            cargo: fila['CARGO'],
+          }))
+        ),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setMensaje(`✅ Archivo procesado correctamente: ${data.registrosProcesados} registros.`);
+        setMensaje(`✅ Insertados: ${data.insertados}. Duplicados locales: ${data.duplicadosLocales.length}, en BD: ${data.duplicadosEnBD.length}`);
         setArchivo(null);
         setVistaPrevia([]);
         setDuplicadosEmail([]);
         setDuplicadosCedula([]);
       } else {
-        setMensaje(data.error || '❌ Error procesando el archivo');
+        setMensaje(data.error || '❌ Error procesando los datos');
       }
     } catch (err) {
-      setMensaje('❌ Error al subir el archivo.');
-      console.error(err);
+      console.error('❌ Error de red:', err);
+      setMensaje('❌ Error al subir los registros.');
     } finally {
       setCargando(false);
     }
   };
+
 
   return (
     <Box
