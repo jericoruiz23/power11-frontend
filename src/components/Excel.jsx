@@ -5,8 +5,30 @@ import * as XLSX from 'xlsx';
 const Excel = () => {
   const [archivo, setArchivo] = useState(null);
   const [vistaPrevia, setVistaPrevia] = useState([]);
+  const [duplicadosEmail, setDuplicadosEmail] = useState([]);
+  const [duplicadosCedula, setDuplicadosCedula] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState('');
+
+  const contarDuplicados = (data, campo) => {
+    const conteo = new Map();
+
+    data.forEach((fila) => {
+      const valor = fila[campo];
+      if (!valor) return;
+      conteo.set(valor, (conteo.get(valor) || 0) + 1);
+    });
+
+    // Filtrar solo los que se repiten 2 o más veces
+    const duplicados = [];
+    conteo.forEach((cantidad, valor) => {
+      if (cantidad > 1) {
+        duplicados.push({ valor, cantidad });
+      }
+    });
+
+    return duplicados;
+  };
 
   const handleArchivoChange = (e) => {
     const file = e.target.files[0];
@@ -14,10 +36,12 @@ const Excel = () => {
     if (file && (file.type.includes('spreadsheetml') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))) {
       setArchivo(file);
       setMensaje('');
-      leerExcel(file); // 👉 Leer y mostrar vista previa automáticamente
+      leerExcel(file);
     } else {
       setArchivo(null);
       setVistaPrevia([]);
+      setDuplicadosEmail([]);
+      setDuplicadosCedula([]);
       setMensaje('Solo se permiten archivos Excel (.xlsx o .xls)');
     }
   };
@@ -31,7 +55,12 @@ const Excel = () => {
       const hoja = workbook.Sheets[workbook.SheetNames[0]];
       const registros = XLSX.utils.sheet_to_json(hoja);
 
+      const duplicadosEmail = contarDuplicados(registros, 'EMAIL');
+      const duplicadosCedula = contarDuplicados(registros, 'CEDULA');
+
       setVistaPrevia(registros);
+      setDuplicadosEmail(duplicadosEmail);
+      setDuplicadosCedula(duplicadosCedula);
     };
     reader.readAsArrayBuffer(file);
   };
@@ -60,6 +89,8 @@ const Excel = () => {
         setMensaje(`✅ Archivo procesado correctamente: ${data.registrosProcesados} registros.`);
         setArchivo(null);
         setVistaPrevia([]);
+        setDuplicadosEmail([]);
+        setDuplicadosCedula([]);
       } else {
         setMensaje(data.error || '❌ Error procesando el archivo');
       }
@@ -101,7 +132,7 @@ const Excel = () => {
         variant="outlined"
         color="error"
         onClick={handleSubir}
-        disabled={cargando || !archivo}
+        disabled={cargando || !archivo || duplicadosEmail.length > 0 || duplicadosCedula.length > 0}
         sx={{ mt: 2 }}
       >
         {cargando ? <CircularProgress size={24} /> : 'Subir archivo'}
@@ -115,7 +146,7 @@ const Excel = () => {
 
       {/* Vista previa de la tabla */}
       {vistaPrevia.length > 0 && (
-        <Box mt={4} width="100%" overflow="auto">
+        <Box mt={4} width="100%" overflow="auto" textAlign="left">
           <Typography variant="h6" gutterBottom>
             Vista previa del archivo
           </Typography>
@@ -154,6 +185,44 @@ const Excel = () => {
           <Typography variant="body2" mt={1}>
             Mostrando los primeros {Math.min(10, vistaPrevia.length)} de {vistaPrevia.length} registros.
           </Typography>
+
+          {(duplicadosEmail.length > 0 || duplicadosCedula.length > 0) && (
+            <Box mt={3} color="error.main">
+              <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                ⚠️ Se encontraron valores duplicados en el archivo:
+              </Typography>
+
+              {duplicadosEmail.length > 0 && (
+                <>
+                  <Typography variant="subtitle2" fontWeight="bold">Emails duplicados:</Typography>
+                  <ul>
+                    {duplicadosEmail.map((item, i) => (
+                      <li key={i}>
+                        {item.valor} — {item.cantidad} {item.cantidad > 1 ? 'veces' : 'vez'}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {duplicadosCedula.length > 0 && (
+                <>
+                  <Typography variant="subtitle2" fontWeight="bold">Cédulas duplicadas:</Typography>
+                  <ul>
+                    {duplicadosCedula.map((item, i) => (
+                      <li key={i}>
+                        {item.valor} — {item.cantidad} {item.cantidad > 1 ? 'veces' : 'vez'}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              <Typography variant="body2" fontWeight="bold" mt={1}>
+                Corrige estos valores antes de subir el archivo.
+              </Typography>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
