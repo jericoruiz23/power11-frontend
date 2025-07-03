@@ -231,7 +231,7 @@ export default function DashboardRegistros() {
                 <Box display="flex" gap={2}>
                     <Button
                         variant="outlined"
-                        color="error"
+                        // color="error"
                         onClick={handleEnvioMasivo}
                         disabled={enviando}
                         sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}

@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export default function Navbar() {
     return (
-        <AppBar position="static" sx={{ backgroundColor: 'red' }}>
+        <AppBar position="static" sx={{ backgroundColor: '#202088' }}>
             <Toolbar>
                 <Button
                     // variant="outlined"
