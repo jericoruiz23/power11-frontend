@@ -18,6 +18,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { CheckCircle, Cancel, MoreVert } from '@mui/icons-material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ExportarCSV from './Export';
 
 const BASE_URL = 'https://power11-form.onrender.com/api/registro';
 
@@ -227,15 +228,19 @@ export default function DashboardRegistros() {
                     onChange={(e) => setFiltro(e.target.value)}
                     sx={{ mb: 2, maxWidth: 400 }}
                 />
-                <Button
-                    variant="outlined"
-                    color="inherit"
-                    onClick={handleEnvioMasivo}
-                    disabled={enviando}
-                    sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
-                >
-                    {enviando ? 'Enviando...' : 'Enviar QR'}
-                </Button>
+                <Box display="flex" gap={2}>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={handleEnvioMasivo}
+                        disabled={enviando}
+                        sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
+                    >
+                        {enviando ? 'Enviando...' : 'Enviar QR'}
+                    </Button>
+                    <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
+                </Box>
+
             </Box>
             <Box flexGrow={1}>
                 <DataGrid
