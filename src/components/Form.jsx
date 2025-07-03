@@ -155,7 +155,7 @@ export default function Form() {
 
                     <Box mt={2}>
                         <Box display="flex" justifyContent="center" mt={2}>
-                            <Button variant="outlined" color="error" type="submit" disabled={cargando}>
+                            <Button variant="outlined" type="submit" disabled={cargando}>
                                 {cargando ? <CircularProgress size={24} /> : 'Registrar'}
                             </Button>
                         </Box>

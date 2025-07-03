@@ -34,7 +34,7 @@ const ExportarCSV = ({ tablaData = [], enviando = false }) => {
     return (
         <Button
             variant="outlined"
-            color="error"
+            // color="error"
             onClick={handleExportarCSV}
             disabled={enviando}
             sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
