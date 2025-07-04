@@ -105,7 +105,7 @@ export default function Form() {
                 />
             </Box>
 
-            <Box p={3} maxWidth={500} mx="auto" sx={{backgroundColor: 'white', borderRadius: 1}}>
+            <Box p={3} maxWidth={500} mx="auto">
                 <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif' }}>
                     REGISTRO
                 </Typography>
@@ -121,10 +121,10 @@ export default function Form() {
                                 e.preventDefault();
                             }
                         }}
-
                         fullWidth
                         margin="normal"
                         required
+                        
                     />
 
                     <TextField

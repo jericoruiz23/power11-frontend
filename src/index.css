@@ -12,18 +12,16 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  /* viewport width */
-  height: 100vh;
-  /* viewport height */
+  width: 100%;
+  height: 100%;
   background: url('https://design-language-website.netlify.app/design/language/e73f5f21ee8cce06d0ef1ad52cfd8dd3/rebus-light.svg') no-repeat center center;
-  background-repeat: repeat;
-  background-size: 160px 160px;
-  /* ancho x alto */
+  background-size: contain;
   opacity: 0.1;
+  /* 🔵 Ajusta esto para más o menos transparencia */
   z-index: -1;
   pointer-events: none;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

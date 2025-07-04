@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Box,
-    TextField,
-    useMediaQuery,
-    useTheme,
-    IconButton,
-    Menu,
-    MenuItem,
-    Button,
-    Typography,
-    DialogContent,
-    DialogTitle,
-    Dialog,
-    DialogActions,
+    Box, TextField, useMediaQuery, useTheme, IconButton, Menu, MenuItem, Button, Typography, DialogContent, DialogTitle, Dialog, DialogActions
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
 import { CheckCircle, Cancel, MoreVert } from '@mui/icons-material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,6 +21,7 @@ export default function DashboardRegistros() {
     const [qrDialogOpen, setQrDialogOpen] = useState(false);
     const [qrImage, setQrImage] = useState('');
     const [enviando, setEnviando] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const theme = useTheme();
     const esMovil = useMediaQuery(theme.breakpoints.down('sm'));
@@ -245,26 +236,66 @@ export default function DashboardRegistros() {
             flexDirection="column"
         >
 
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                mb={2}
+                gap={1}
+                flexDirection="row"
+            >
+
                 <TextField
                     label="Buscar"
                     variant="outlined"
                     value={filtro}
                     onChange={(e) => setFiltro(e.target.value)}
-                    sx={{ mb: 2, maxWidth: 400 }}
+                    sx={{
+                        flexGrow: 1,
+                        maxWidth: esMovil ? '100%' : 400,
+                    }}
                 />
-                <Box display="flex" gap={2}>
-                    <Button
-                        variant="outlined"
-                        // color="error"
-                        onClick={handleEnvioMasivo}
-                        disabled={enviando}
-                        sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
-                    >
-                        {enviando ? 'Enviando...' : 'Enviar QR'}
-                    </Button>
-                    <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
-                </Box>
+
+                {esMovil ? (
+                    <>
+                        <IconButton
+                            onClick={() => setDrawerOpen(true)}
+                            sx={{ ml: 1 }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+                            <Box width={250} p={2}>
+                                <Typography variant="h6" mb={2}>Acciones</Typography>
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    onClick={() => {
+                                        setDrawerOpen(false);
+                                        handleEnvioMasivo();
+                                    }}
+                                    disabled={enviando}
+                                    sx={{ mb: 1 }}
+                                >
+                                    {enviando ? 'Enviando...' : 'Enviar QR'}
+                                </Button>
+                                <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
+                            </Box>
+                        </Drawer>
+                    </>
+                ) : (
+                    <Box display="flex" gap={2}>
+                        <Button
+                            variant="outlined"
+                            onClick={handleEnvioMasivo}
+                            disabled={enviando}
+                            sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
+                        >
+                            {enviando ? 'Enviando...' : 'Enviar QR'}
+                        </Button>
+                        <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
+                    </Box>
+                )}
 
             </Box>
             <Box flexGrow={1}>

@@ -9,44 +9,59 @@ export default function Scanner() {
     const [openDialog, setOpenDialog] = useState(false);
     const scannerRef = useRef(null);
     const qrCodeScanner = useRef(null);
+    const isRunning = useRef(false);
 
-    const iniciarScanner = () => {
+    const iniciarScanner = async () => {
         if (!qrCodeScanner.current) {
             qrCodeScanner.current = new Html5Qrcode(qrRegionId);
         }
 
-        qrCodeScanner.current.start(
-            { facingMode: "environment" },
-            {
-                fps: 10,
-                qrbox: { width: 250, height: 250 }
-            },
-            (decodedText) => {
-                qrCodeScanner.current.stop().then(() => {
-                    setResultado(decodedText);
-                    setOpenDialog(true);
-                });
-            },
-            (error) => {
-                // puedes loguear errores si quieres
+        if (!isRunning.current) {
+            try {
+                await qrCodeScanner.current.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 }
+                    },
+                    (decodedText) => {
+                        detenerScanner(); // Detener inmediatamente al detectar
+                        setResultado(decodedText);
+                        setOpenDialog(true);
+                    },
+                    (error) => {
+                        // Puedes ignorar errores frecuentes
+                    }
+                );
+                isRunning.current = true;
+            } catch (err) {
+                console.error("Error al iniciar escáner:", err);
             }
-        ).catch((err) => console.error("Error al iniciar escáner", err));
+        }
+    };
+
+    const detenerScanner = async () => {
+        if (qrCodeScanner.current && isRunning.current) {
+            try {
+                await qrCodeScanner.current.stop();
+                await qrCodeScanner.current.clear();
+                isRunning.current = false;
+            } catch (err) {
+                console.warn("Error al detener escáner:", err);
+            }
+        }
     };
 
     const manejarCerrarDialogo = () => {
         setOpenDialog(false);
-        iniciarScanner(); // Reiniciar escaneo
+        iniciarScanner(); // Reinicia escaneo al cerrar el resultado
     };
 
     useEffect(() => {
         iniciarScanner();
 
         return () => {
-            if (qrCodeScanner.current) {
-                qrCodeScanner.current.stop().then(() => {
-                    qrCodeScanner.current.clear();
-                });
-            }
+            detenerScanner(); // Limpiar cámara al desmontar componente
         };
     }, []);
 
@@ -75,10 +90,17 @@ export default function Scanner() {
                     borderRadius: 2,
                     backgroundColor: '#f5f5f5',
                     mt: 2,
+                    '& video': {
+                        objectFit: 'cover',
+                        width: '100%',
+                        height: '100%',
+                    },
+                    '& canvas': {
+                        display: 'none', // si lo genera y no lo necesitas
+                    },
                 }}
             />
 
-            {/* Dialog con el resultado del QR */}
             <Dialog
                 open={openDialog}
                 onClose={manejarCerrarDialogo}
