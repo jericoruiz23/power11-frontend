@@ -158,35 +158,53 @@ export default function DashboardRegistros() {
 
     const columnasBase = [
         { field: 'nombre', headerName: 'Nombre', flex: .8 },
-        { field: 'empresa', headerName: 'Empresa', flex: 0.7 },
-        {
-            field: 'estado',
-            headerName: 'Ingreso',
-            flex: 0.5,
-            renderCell: (params) =>
-                params.value === 'inactivo' ? (
-                    <CheckCircle style={{ color: 'green' }} />
-                ) : (
-                    <Cancel style={{ color: 'red' }} />
-                ),
-        },
+        { field: 'empresa', headerName: 'Empresa', flex: .9 },
     ];
 
     const columnasExtras = [
-        { field: 'email', headerName: 'Email', flex: 1 },
-        { field: 'cedula', headerName: 'Cédula', flex: 0.8 },
-        { field: 'cargo', headerName: 'Cargo', flex: 1 },
+        { field: 'email', headerName: 'Email', flex: 1.3 },
+        { field: 'cedula', headerName: 'Cédula', flex: .6 },
+        { field: 'cargo', headerName: 'Cargo', flex: .8 },
         {
             field: 'correoEnviado',
             headerName: 'QR Enviado',
-            flex: 0.75,
-            renderCell: (params) =>
-                params.value ? (
-                    <CheckCircle style={{ color: 'green' }} titleAccess="Correo enviado" />
-                ) : (
-                    <Cancel style={{ color: 'red' }} titleAccess="No enviado" />
-                ),
-        }
+            flex: 0.55,
+            renderCell: (params) => (
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                    height="100%" // 🔥 esto asegura el centrado vertical
+                >
+                    {params.value ? (
+                        <CheckCircle style={{ color: 'green' }} titleAccess="Correo enviado" />
+                    ) : (
+                        <Cancel style={{ color: 'red' }} titleAccess="No enviado" />
+                    )}
+                </Box>
+            ),
+        },
+        {
+            field: 'estado',
+            headerName: 'Ingreso',
+            flex: 0.4,
+            renderCell: (params) => (
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                    height="100%"
+                >
+                    {params.value === 'inactivo' ? (
+                        <CheckCircle style={{ color: 'green' }} />
+                    ) : (
+                        <Cancel style={{ color: 'red' }} />
+                    )}
+                </Box>
+            ),
+        },
     ];
 
     const columnaAcciones = {

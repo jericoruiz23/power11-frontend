@@ -87,15 +87,17 @@ export default function Form() {
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField
-                        label="Nombre"
+                        label="Nombre y apellido"
                         name="nombre"
                         value={form.nombre}
                         onChange={handleChange}
                         onKeyPress={(e) => {
-                            if (!/^[a-zA-Z\s]*$/.test(e.key)) {
+                            const key = e.key;
+                            if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
                                 e.preventDefault();
                             }
                         }}
+
                         fullWidth
                         margin="normal"
                         required
