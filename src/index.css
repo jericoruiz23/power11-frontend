@@ -3,11 +3,25 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* background: url('https://images.unsplash.com/photo-1607746882042-944635dfe10e') no-repeat center center fixed; */
-  background-size: cover;
+  position: relative;
+  overflow-x: hidden;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://brandlogos.net/wp-content/uploads/2022/05/ibm_rebus-logo-brandlogos.net_.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.1;
+  /* 🔵 Ajusta esto para más o menos transparencia */
+  z-index: -1;
+  pointer-events: none;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
