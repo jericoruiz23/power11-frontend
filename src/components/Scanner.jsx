@@ -1,84 +1,101 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Box, Typography, Paper } from '@mui/material';
+
+const qrRegionId = "qr-reader";
 
 export default function Scanner() {
-    const qrRegionId = 'reader';
     const [resultado, setResultado] = useState('');
+    const [openDialog, setOpenDialog] = useState(false);
     const scannerRef = useRef(null);
+    const qrCodeScanner = useRef(null);
+
+    const iniciarScanner = () => {
+        if (!qrCodeScanner.current) {
+            qrCodeScanner.current = new Html5Qrcode(qrRegionId);
+        }
+
+        qrCodeScanner.current.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
+            },
+            (decodedText) => {
+                qrCodeScanner.current.stop().then(() => {
+                    setResultado(decodedText);
+                    setOpenDialog(true);
+                });
+            },
+            (error) => {
+                // puedes loguear errores si quieres
+            }
+        ).catch((err) => console.error("Error al iniciar escáner", err));
+    };
+
+    const manejarCerrarDialogo = () => {
+        setOpenDialog(false);
+        iniciarScanner(); // Reiniciar escaneo
+    };
 
     useEffect(() => {
-        const html5QrCode = new Html5Qrcode(qrRegionId);
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-        html5QrCode
-            .start(
-                { facingMode: 'environment' },
-                config,
-                (decodedText) => {
-                    setResultado(decodedText);
-                    html5QrCode.stop().then(() => {
-                        console.log('Escaneo detenido');
-                        // Aquí puedes hacer fetch a tu API con tu secret key
-                    });
-                },
-                (errorMessage) => {
-                    // console.warn(`QR no detectado: ${errorMessage}`);
-                }
-            )
-            .catch((err) => {
-                console.error('No se pudo iniciar el escáner', err);
-            });
-
-        scannerRef.current = html5QrCode;
+        iniciarScanner();
 
         return () => {
-            if (scannerRef.current) {
-                scannerRef.current.stop().catch((err) => console.log('Error al detener', err));
+            if (qrCodeScanner.current) {
+                qrCodeScanner.current.stop().then(() => {
+                    qrCodeScanner.current.clear();
+                });
             }
         };
     }, []);
 
     return (
-        <Box p={3} display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
-            <Paper
-                elevation={4}
+        <Box
+            sx={{
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                minHeight: '100vh',
+                backgroundColor: '#f0f2f5',
+            }}
+        >
+            <Typography variant="h6" gutterBottom>
+                Escanea tu código QR
+            </Typography>
+
+            <Box
+                id={qrRegionId}
                 sx={{
-                    padding: 4,
-                    borderRadius: 3,
-                    maxWidth: 500,
                     width: '100%',
-                    textAlign: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    backdropFilter: 'blur(6px)',
+                    maxWidth: 500,
+                    height: '60vh',
+                    border: '2px dashed #1976d2',
+                    borderRadius: 2,
+                    backgroundColor: '#f5f5f5',
+                    mt: 2,
                 }}
+            />
+
+            {/* Dialog con el resultado del QR */}
+            <Dialog
+                open={openDialog}
+                onClose={manejarCerrarDialogo}
+                aria-labelledby="resultado-qr"
             >
-                <Typography variant="h5" gutterBottom fontWeight="bold">
-                    Escanea tu código QR
-                </Typography>
-
-                <Box
-                    id={qrRegionId}
-                    sx={{
-                        width: '100%',
-                        border: '2px dashed #0033cc',
-                        borderRadius: 2,
-                        mt: 2,
-                        mb: 2,
-                        aspectRatio: '1 / 1', // Mantener cuadrado
-                        backgroundColor: '#f9f9f9',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                />
-
-                {resultado && (
-                    <Typography variant="body1" color="green" mt={2}>
-                        ✅ QR Detectado: <strong>{resultado}</strong>
+                <DialogTitle id="resultado-qr">Código QR Detectado</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>
+                        {resultado}
                     </Typography>
-                )}
-            </Paper>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={manejarCerrarDialogo} variant="contained" color="primary">
+                        Escanear otro usuario
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
