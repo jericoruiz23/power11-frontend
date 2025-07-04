@@ -1,10 +1,9 @@
-// Export.jsx
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-const ExportarCSV = ({ tablaData = [], enviando = false }) => {
+const ExportarCSV = ({ tablaData = [], enviando = false, asMenuItem = false }) => {
     const columnasExportadas = ['nombre', 'empresa', 'email', 'cedula', 'cargo'];
 
     const handleExportarCSV = () => {
@@ -13,7 +12,6 @@ const ExportarCSV = ({ tablaData = [], enviando = false }) => {
             return;
         }
 
-        // Solo incluye las columnas deseadas
         const datosFiltrados = tablaData.map((item) =>
             columnasExportadas.reduce((obj, key) => {
                 obj[key] = item[key];
@@ -31,10 +29,28 @@ const ExportarCSV = ({ tablaData = [], enviando = false }) => {
         saveAs(blob, 'datos_exportados.csv');
     };
 
+    if (asMenuItem) {
+        return (
+            <Typography
+                onClick={handleExportarCSV}
+                sx={{
+                    cursor: 'pointer',
+                    paddingY: 1,
+                    paddingX: 2,
+                    '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                    width: '100%',
+                }}
+            >
+                Exportar CSV
+            </Typography>
+        );
+    }
+
     return (
         <Button
             variant="outlined"
-            // color="error"
             onClick={handleExportarCSV}
             disabled={enviando}
             sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}

@@ -26,6 +26,16 @@ export default function DashboardRegistros() {
     const theme = useTheme();
     const esMovil = useMediaQuery(theme.breakpoints.down('sm'));
 
+    const [menuAnchorEl, setMenuAnchorEl] = useState(null); // nuevo estado para el menú
+
+    const abrirMenu = (event) => {
+        setMenuAnchorEl(event.currentTarget);
+    };
+
+    const cerrarMenu = () => {
+        setMenuAnchorEl(null);
+    };
+
     useEffect(() => {
         fetch(BASE_URL)
             .then((res) => res.json())
@@ -242,9 +252,7 @@ export default function DashboardRegistros() {
                 justifyContent="space-between"
                 mb={2}
                 gap={1}
-                flexDirection="row"
             >
-
                 <TextField
                     label="Buscar"
                     variant="outlined"
@@ -258,30 +266,54 @@ export default function DashboardRegistros() {
 
                 {esMovil ? (
                     <>
-                        <IconButton
-                            onClick={() => setDrawerOpen(true)}
-                            sx={{ ml: 1 }}
-                        >
+                        <IconButton onClick={abrirMenu}>
                             <MenuIcon />
                         </IconButton>
-                        <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                            <Box width={250} p={2}>
-                                <Typography variant="h6" mb={2}>Acciones</Typography>
-                                <Button
-                                    fullWidth
-                                    variant="outlined"
-                                    onClick={() => {
-                                        setDrawerOpen(false);
-                                        handleEnvioMasivo();
-                                    }}
-                                    disabled={enviando}
-                                    sx={{ mb: 1 }}
-                                >
-                                    {enviando ? 'Enviando...' : 'Enviar QR'}
-                                </Button>
-                                <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
-                            </Box>
-                        </Drawer>
+
+                        <Menu
+                            anchorEl={menuAnchorEl}
+                            open={Boolean(menuAnchorEl)}
+                            onClose={cerrarMenu}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            PaperProps={{
+                                sx: {
+                                    background: 'rgb(255, 255, 255)',
+                                    WebkitBackdropFilter: 'blur(10px)',
+                                    borderRadius: 2,
+                                    color: '#000',
+                                    minWidth: 200,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    py: 1,
+                                },
+                            }}
+                        >
+                            <MenuItem
+                                onClick={() => {
+                                    cerrarMenu();
+                                    handleEnvioMasivo();
+                                }}
+                                sx={{
+                                    justifyContent: 'center', // centra el texto
+                                    width: '100%',
+                                }}
+                            >
+                                {enviando ? 'Enviando...' : 'Enviar QR'}
+                            </MenuItem>
+
+                            <MenuItem
+                                onClick={cerrarMenu}
+                                sx={{
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                }}
+                            >
+                                <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} asMenuItem />
+                            </MenuItem>
+                        </Menu>
+
                     </>
                 ) : (
                     <Box display="flex" gap={2}>
@@ -296,8 +328,8 @@ export default function DashboardRegistros() {
                         <ExportarCSV tablaData={registrosFiltrados} enviando={enviando} />
                     </Box>
                 )}
-
             </Box>
+
             <Box flexGrow={1}>
                 <DataGrid
                     rows={registrosFiltrados}
