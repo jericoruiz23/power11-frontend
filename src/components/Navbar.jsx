@@ -5,17 +5,14 @@ import {
     Button,
     Box,
     IconButton,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
+    Menu,
+    MenuItem,
     useTheme,
     useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink } from 'react-router-dom';
-import logo from './navbar_logo.png'; // Ajusta la ruta si es diferente
+import logo from './navbar_logo.png';
 
 const navItems = [
     { text: 'Registro', to: '/registro' },
@@ -24,27 +21,17 @@ const navItems = [
 ];
 
 export default function Navbar() {
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
-    const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ width: 250 }}>
-            <List>
-                {navItems.map((item) => (
-                    <ListItem key={item.text} disablePadding>
-                        <ListItemButton component={RouterLink} to={item.to}>
-                            <ListItemText primary={item.text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Box>
-    );
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <>
@@ -59,7 +46,7 @@ export default function Navbar() {
                         />
                     </Box>
 
-                    {/* Desktop buttons */}
+                    {/* Botones en desktop */}
                     <Box
                         sx={{
                             display: { xs: 'none', md: 'flex' },
@@ -81,27 +68,38 @@ export default function Navbar() {
                         ))}
                     </Box>
 
-                    {/* Hamburger menu for mobile */}
-                    <IconButton
-                        color="inherit"
-                        edge="end"
-                        onClick={handleDrawerToggle}
-                        sx={{ display: { xs: 'flex', md: 'none' }, marginRight: '1rem' }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    {/* Menú hamburguesa en móviles */}
+                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                        <IconButton
+                            color="inherit"
+                            edge="end"
+                            onClick={handleMenuOpen}
+                            sx={{ marginRight: '1rem' }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        >
+                            {navItems.map((item) => (
+                                <MenuItem
+                                    key={item.text}
+                                    component={RouterLink}
+                                    to={item.to}
+                                    onClick={handleMenuClose}
+                                >
+                                    {item.text}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
                 </Toolbar>
             </AppBar>
-
-            {/* Drawer menu */}
-            <Drawer
-                anchor="right"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{ keepMounted: true }}
-            >
-                {drawer}
-            </Drawer>
         </>
     );
 }
