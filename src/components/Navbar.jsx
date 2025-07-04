@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
 import {
-    AppBar,
+    Box,
     Toolbar,
     Button,
-    Box,
     IconButton,
     Menu,
     MenuItem,
-    useTheme,
-    useMediaQuery,
-    Container,
     Paper,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link as RouterLink, Outlet } from 'react-router-dom'; // Usa Outlet si usas layout
+import { Link as RouterLink } from 'react-router-dom';
 import logo from './navbar_logo.png';
 
 const navItems = [
     { text: 'REGISTRO', to: '/registro' },
     { text: 'REPORTE', to: '/' },
     { text: 'SUBIR EXCEL', to: '/excel' },
-    { text: 'DASHBOARD', to: '/dashboard' },
+    { text: 'SCANNER QR', to: '/qrscanner' },
 ];
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
     const handleMenuClose = () => setAnchorEl(null);
 
@@ -87,11 +80,7 @@ export default function Navbar() {
                                     to={item.to}
                                     sx={{
                                         color: '#fff',
-                                        fontWeight: 500,
-                                        textTransform: 'uppercase',
-                                        fontSize: '0.85rem',
-                                        letterSpacing: '1px',
-                                        transition: '0.3s',
+                                        transition: 'color 0.3s',
                                         '&:hover': {
                                             color: '#00eaff',
                                         },
@@ -122,7 +111,6 @@ export default function Navbar() {
                                 PaperProps={{
                                     sx: {
                                         background: 'rgb(255, 255, 255)',
-                                        // backdropFilter: 'blur(10px)',
                                         WebkitBackdropFilter: 'blur(10px)',
                                         borderRadius: 2,
                                         color: '#000',
@@ -135,11 +123,7 @@ export default function Navbar() {
                                         component={RouterLink}
                                         to={item.to}
                                         onClick={handleMenuClose}
-                                        sx={{
-                                            fontWeight: 500,
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.5px',
-                                        }}
+                                        sx={{}}
                                     >
                                         {item.text}
                                     </MenuItem>
@@ -152,9 +136,6 @@ export default function Navbar() {
 
             {/* ESPACIADOR para evitar solapamiento */}
             <Box sx={{ height: '80px' }} />
-
-            {/* Si estás usando layout con <Outlet />, puedes ponerlo aquí */}
-            {/* <Outlet /> */}
         </>
     );
 }
