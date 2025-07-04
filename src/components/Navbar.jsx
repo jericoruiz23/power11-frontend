@@ -57,11 +57,13 @@ export default function Navbar() {
                     >
                         {/* Logo */}
                         <Box display="flex" alignItems="center">
-                            <img
-                                src={logo}
-                                alt="Logo"
-                                style={{ height: 36, marginLeft: '1rem', marginRight: 16 }}
-                            />
+                            <RouterLink to="/registro" style={{ display: 'flex', alignItems: 'center' }}>
+                                <img
+                                    src={logo}
+                                    alt="Logo"
+                                    style={{ height: 36, marginLeft: '1rem', marginRight: 16, cursor: 'pointer' }}
+                                />
+                            </RouterLink>
                         </Box>
 
                         {/* Botones en desktop */}
