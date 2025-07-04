@@ -49,7 +49,7 @@ export default function Navbar() {
                     elevation={3}
                     sx={{
                         borderRadius: '20px',
-                        background: 'rgba(0, 4, 255, 0.75)',
+                        background: 'rgba(0, 4, 255, 0.85)',
                         backdropFilter: 'blur(14px)',
                         WebkitBackdropFilter: 'blur(14px)',
                         border: '1px solid rgba(255, 255, 255, 0.2)',
