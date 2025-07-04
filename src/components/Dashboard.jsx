@@ -237,7 +237,14 @@ export default function DashboardRegistros() {
     });
 
     return (
-        <Box p={3} height="100vh" display="flex" flexDirection="column">
+        <Box
+            p={{ xs: 2, sm: 3 }}
+            // pt={{ xs: 10, sm: 12 }} // espacio para el navbar flotante
+            minHeight="100vh"
+            display="flex"
+            flexDirection="column"
+        >
+
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <TextField
                     label="Buscar"
