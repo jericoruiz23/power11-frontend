@@ -7,7 +7,6 @@ const qrRegionId = "qr-reader";
 export default function Scanner() {
     const [resultado, setResultado] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
-    const scannerRef = useRef(null);
     const qrCodeScanner = useRef(null);
     const isRunning = useRef(false);
 
