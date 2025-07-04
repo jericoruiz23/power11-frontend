@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Formulario from './components/Form';
 import Excel from './components/Excel';
+import Insights from './components/Insights'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/registro" element={<Formulario />} />
           <Route path="/excel" element={<Excel />} />
+          <Route path="/insights" element={<Insights />} />
         </Routes>
       </Container>
     </>
