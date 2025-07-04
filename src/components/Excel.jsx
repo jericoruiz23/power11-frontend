@@ -122,6 +122,10 @@ const Excel = () => {
       maxWidth="700px"
       margin="0 auto"
       textAlign="center"
+      sx={{
+        backgroundColor: 'white',
+        borderRadius: 1, // opcional para bordes redondeados
+      }}
     >
       <Typography variant="h6" gutterBottom>
         Subir archivo Excel

@@ -105,7 +105,7 @@ export default function Form() {
                 />
             </Box>
 
-            <Box p={3} maxWidth={500} mx="auto">
+            <Box p={3} maxWidth={500} mx="auto" sx={{backgroundColor: 'white', borderRadius: 1}}>
                 <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif' }}>
                     REGISTRO
                 </Typography>
