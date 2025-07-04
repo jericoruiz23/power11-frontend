@@ -71,24 +71,37 @@ export default function Form() {
                     justifyContent: 'center',
                     mb: 3,
                     mt: 9,
-                    flexWrap: 'wrap',
-                    gap: 2,
+                    px: 2, // padding horizontal
+                    gap: { xs: 1, sm: 3 }, // espacio entre imágenes
+                    overflowX: 'auto', // evita que se desborden en pantallas pequeñas
                 }}
             >
-                <img
+                <Box
+                    component="img"
                     src="https://www.nexsysla.com/ec/wp-content/uploads/sites/8/2022/06/nexsys-logo-light-2023.png"
                     alt="Logo Nexsys"
-                    style={{ maxWidth: '100px', height: 'auto' }}
+                    sx={{
+                        height: { xs: 28, sm: 36, md: 40 },
+                        flexShrink: 0,
+                    }}
                 />
-                <img
+                <Box
+                    component="img"
                     src="https://cdn-icons-png.flaticon.com/512/43/43694.png"
-                    alt="Icono"
-                    style={{ maxWidth: '100px', height: 'auto' }}
+                    alt="Logo Intermedio"
+                    sx={{
+                        height: { xs: 28, sm: 36, md: 40 },
+                        flexShrink: 0,
+                    }}
                 />
-                <img
+                <Box
+                    component="img"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
                     alt="Logo IBM"
-                    style={{ maxWidth: '100px', height: 'auto' }}
+                    sx={{
+                        height: { xs: 28, sm: 36, md: 40 },
+                        flexShrink: 0,
+                    }}
                 />
             </Box>
 
