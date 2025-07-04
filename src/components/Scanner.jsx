@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 
 export default function Scanner() {
     const qrRegionId = 'reader';
@@ -40,16 +40,45 @@ export default function Scanner() {
     }, []);
 
     return (
-        <Box p={3}>
-            <Typography variant="h6" gutterBottom>
-                Escanea tu código QR
-            </Typography>
-            <div id={qrRegionId} style={{ width: '100%' }} />
-            {resultado && (
-                <Typography variant="body1" mt={2}>
-                    QR Detectado: {resultado}
+        <Box p={3} display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+            <Paper
+                elevation={4}
+                sx={{
+                    padding: 4,
+                    borderRadius: 3,
+                    maxWidth: 500,
+                    width: '100%',
+                    textAlign: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(6px)',
+                }}
+            >
+                <Typography variant="h5" gutterBottom fontWeight="bold">
+                    Escanea tu código QR
                 </Typography>
-            )}
+
+                <Box
+                    id={qrRegionId}
+                    sx={{
+                        width: '100%',
+                        border: '2px dashed #0033cc',
+                        borderRadius: 2,
+                        mt: 2,
+                        mb: 2,
+                        aspectRatio: '1 / 1', // Mantener cuadrado
+                        backgroundColor: '#f9f9f9',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                />
+
+                {resultado && (
+                    <Typography variant="body1" color="green" mt={2}>
+                        ✅ QR Detectado: <strong>{resultado}</strong>
+                    </Typography>
+                )}
+            </Paper>
         </Box>
     );
 }
