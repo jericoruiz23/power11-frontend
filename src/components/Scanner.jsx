@@ -76,7 +76,7 @@ export default function Scanner() {
             }}
         >
             <Typography variant="h6" gutterBottom>
-                Escanea tu código QR
+                Escanea el código QR
             </Typography>
 
             <Box

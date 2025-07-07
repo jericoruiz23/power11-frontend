@@ -82,14 +82,16 @@ export default function Navbar() {
                                     to={item.to}
                                     sx={{
                                         color: '#fff',
-                                        transition: 'color 0.3s',
+                                        transition: 'transform 0.3s ease, color 0.3s ease',
                                         '&:hover': {
-                                            color: '#00eaff',
+                                            transform: 'scale(1.1)',
+                                            color: '#fff', // puedes mantener el color blanco o cambiarlo si quieres
                                         },
                                     }}
                                 >
                                     {item.text}
                                 </Button>
+
                             ))}
                         </Box>
 
