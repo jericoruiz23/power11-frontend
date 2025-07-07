@@ -6,6 +6,10 @@ import {
     Typography,
     CircularProgress,
     Alert,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControl,
 } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,10 +17,12 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Form() {
     const [form, setForm] = useState({
         nombre: '',
+        apellido: '',
         email: '',
         cedula: '',
         empresa: '',
         cargo: '',
+        opcion: '',
     });
 
     const [mensaje, setMensaje] = useState('');
@@ -32,27 +38,36 @@ export default function Form() {
         setCargando(true);
 
         try {
+            // Concatenar nombre y apellido para enviar en "nombre"
+            const nombreCompleto = `${form.nombre.trim()} ${form.apellido.trim()}`.trim();
+
+            const envio = {
+                ...form,
+                nombre: nombreCompleto,
+            };
+            delete envio.apellido; // no enviar apellido separado
+
             const res = await fetch('https://power11-form.onrender.com/api/registro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify(envio),
             });
 
             const data = await res.json();
 
             if (res.ok) {
                 toast.success('Registro exitoso');
-                // setMensaje(`✅ Usuario registrado correctamente. Token: ${data.token}`);
                 setForm({
                     nombre: '',
+                    apellido: '',
                     email: '',
                     cedula: '',
                     empresa: '',
                     cargo: '',
+                    opcion: '',
                 });
             } else {
                 toast.error(data.mensaje || data.error || 'Error en el registro');
-                // setMensaje(`❌ Error: ${data.mensaje || data.error}`);
             }
         } catch (err) {
             toast.error('No se pudo conectar con el servidor');
@@ -70,62 +85,68 @@ export default function Form() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     mb: 3,
-                    mt: 9,
-                    px: 2, // padding horizontal
-                    gap: { xs: 1, sm: 3 }, // espacio entre imágenes
-                    overflowX: 'auto', // evita que se desborden en pantallas pequeñas
+                    mt: 8,
+                    px: 2,
+                    gap: { xs: 1, sm: 3 },
+                    overflowX: 'auto',
                 }}
             >
                 <Box
                     component="img"
                     src="https://www.nexsysla.com/ec/wp-content/uploads/sites/8/2022/06/nexsys-logo-light-2023.png"
                     alt="Logo Nexsys"
-                    sx={{
-                        height: { xs: 28, sm: 36, md: 40 },
-                        flexShrink: 0,
-                    }}
+                    sx={{ height: { xs: 28, sm: 36, md: 40 }, flexShrink: 0 }}
                 />
                 <Box
                     component="img"
                     src="https://cdn-icons-png.flaticon.com/512/43/43694.png"
                     alt="Logo Intermedio"
-                    sx={{
-                        height: { xs: 28, sm: 36, md: 40 },
-                        flexShrink: 0,
-                    }}
+                    sx={{ height: { xs: 28, sm: 36, md: 40 }, flexShrink: 0 }}
                 />
                 <Box
                     component="img"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
                     alt="Logo IBM"
-                    sx={{
-                        height: { xs: 28, sm: 36, md: 40 },
-                        flexShrink: 0,
-                    }}
+                    sx={{ height: { xs: 28, sm: 36, md: 40 }, flexShrink: 0 }}
                 />
             </Box>
 
             <Box p={3} maxWidth={500} mx="auto">
-                <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif' }}>
+                <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif', marginTop: -2 }}>
                     REGISTRO
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Nombre y apellido"
-                        name="nombre"
-                        value={form.nombre}
-                        onChange={handleChange}
-                        onKeyPress={(e) => {
-                            const key = e.key;
-                            if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
-                                e.preventDefault();
-                            }
-                        }}
-                        fullWidth
-                        margin="normal"
-                        required
-                        
-                    />
+                    <Box display="flex" gap={2} mb={.5}>
+                        <TextField
+                            label="Nombre"
+                            name="nombre"
+                            value={form.nombre}
+                            onChange={handleChange}
+                            onKeyPress={(e) => {
+                                const key = e.key;
+                                if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            fullWidth
+                            required
+                        />
+
+                        <TextField
+                            label="Apellido"
+                            name="apellido"
+                            value={form.apellido}
+                            onChange={handleChange}
+                            onKeyPress={(e) => {
+                                const key = e.key;
+                                if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            fullWidth
+                            required
+                        />
+                    </Box>
 
                     <TextField
                         label="Email"
@@ -178,19 +199,29 @@ export default function Form() {
                         required
                     />
 
+                    <FormControl fullWidth margin="normal" required>
+                        <InputLabel id="select-label">Seleccione una opción</InputLabel>
+                        <Select
+                            labelId="select-label"
+                            id="select-opcion"
+                            name="opcion"
+                            value={form.opcion}
+                            label="Seleccione una opción"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value="opcion1">Opción 1</MenuItem>
+                            <MenuItem value="opcion2">Opción 2</MenuItem>
+                            <MenuItem value="opcion3">Opción 3</MenuItem>
+                        </Select>
+                    </FormControl>
 
-                    <Box mt={2}>
-                        <Box display="flex" justifyContent="center" mt={2}>
-                            <Button variant="outlined" type="submit" disabled={cargando}>
-                                {cargando ? <CircularProgress size={24} /> : 'Registrar'}
-                            </Button>
-                        </Box>
-                        {/* <Box display="flex" justifyContent="center" mt={2}>
-                            <Button variant="outlined" color="error" disabled={cargando}>
-                                {cargando ? <CircularProgress size={24} /> : 'Subir Excel'}
-                            </Button>
-                        </Box> */}
-
+                    <Box mt={2} display="flex" justifyContent="center">
+                        <Button variant="outlined" type="submit" disabled={cargando}>
+                            {cargando ? <CircularProgress size={24} /> : 'Registrar'}
+                        </Button>
                     </Box>
                 </form>
 
@@ -205,6 +236,5 @@ export default function Form() {
                 <ToastContainer position="bottom-left" autoClose={3000} />
             </Box>
         </>
-
     );
 }
