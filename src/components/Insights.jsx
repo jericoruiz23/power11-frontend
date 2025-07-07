@@ -67,31 +67,9 @@ export default function Insights() {
             >
                 Insights del Evento
             </Typography>
-
-            <Grid container spacing={3}>
-                {cards.map((card, index) => (
-                    <Grid item xs={12} sm={6} md={3} key={index}>
-                        <Card sx={{ height: '100%' }}>
-                            <CardContent>
-                                <Typography variant="subtitle2" color="textSecondary" gutterBottom>
-                                    {card.label}
-                                </Typography>
-                                <Typography
-                                    variant="h5"
-                                    fontWeight="bold"
-                                    color="primary"
-                                    sx={{ mt: 1 }}
-                                >
-                                    {card.value}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
             <Grid item xs={12} sm={6} md={3}>
-            <Widget/>
-            <Widget2/>
+                <Widget />
+                <Widget2 />
 
             </Grid>
         </Box>
