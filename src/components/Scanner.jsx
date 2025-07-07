@@ -38,7 +38,7 @@ export default function Scanner() {
                     (decodedText) => {
                         detenerScanner();
 
-                        fetch(`https://tuapi.com/verificar/${decodedText}`, {
+                        fetch(`https://power11-form.onrender.com/api/registro/verificar/${decodedText}`, {
                             headers: {
                                 'x-app-secret': 'tu-secreto-aqui'
                             }
