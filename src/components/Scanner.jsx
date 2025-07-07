@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Typography, Button, Dialog, DialogContent, DialogActions } from '@mui/material';
 import { Html5Qrcode } from 'html5-qrcode';
 
 const qrRegionId = "qr-reader";
@@ -138,18 +138,30 @@ export default function Scanner() {
                 open={openDialog}
                 onClose={manejarCerrarDialogo}
                 aria-labelledby="resultado-qr"
-                maxWidth="md"
+                maxWidth="sm"
                 fullWidth
             >
-                <DialogTitle id="resultado-qr">Resultado del Escaneo</DialogTitle>
                 <DialogContent>
-                    <Box
-                        sx={{ wordBreak: 'break-word' }}
+                    <div
                         dangerouslySetInnerHTML={{ __html: resultado }}
+                        style={{
+                            fontSize: 16,
+                            color: '#222',
+                            wordBreak: 'break-word',
+                            padding: '12px',
+                            backgroundColor: '#f9f9f9',
+                            borderRadius: '8px',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                            overflowY: 'auto',
+                            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                            lineHeight: 1.5,
+                        }}
                     />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={manejarCerrarDialogo} variant="contained" color="primary">
+
+                {/* Aquí centramos el botón */}
+                <DialogActions sx={{ justifyContent: 'center' }}>
+                    <Button onClick={manejarCerrarDialogo} variant="outlined" color="primary">
                         Escanear otro usuario
                     </Button>
                 </DialogActions>
