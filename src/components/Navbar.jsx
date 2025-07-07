@@ -17,6 +17,7 @@ const navItems = [
     { text: 'REPORTE', to: '/' },
     { text: 'SUBIR EXCEL', to: '/excel' },
     { text: 'SCANNER QR', to: '/qrscanner' },
+    { text: 'DASHBOARD', to: '/insights' },
 ];
 
 export default function Navbar() {
