@@ -16,7 +16,7 @@ body::before {
   height: 100%;
   background: url('https://design-language-website.netlify.app/design/language/e73f5f21ee8cce06d0ef1ad52cfd8dd3/rebus-light.svg') no-repeat center center;
   background-size: contain;
-  opacity: 0.2;
+  opacity: 0.05;
   filter: blur(3px);
   /* 👈 desenfoque aplicado */
   z-index: 1;

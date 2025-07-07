@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Html5Qrcode } from 'html5-qrcode';
 
@@ -10,7 +10,19 @@ export default function Scanner() {
     const qrCodeScanner = useRef(null);
     const isRunning = useRef(false);
 
-    const iniciarScanner = async () => {
+    const detenerScanner = useCallback(async () => {
+        if (qrCodeScanner.current && isRunning.current) {
+            try {
+                await qrCodeScanner.current.stop();
+                await qrCodeScanner.current.clear();
+                isRunning.current = false;
+            } catch (err) {
+                console.warn("Error al detener escáner:", err);
+            }
+        }
+    }, []);
+
+    const iniciarScanner = useCallback(async () => {
         if (!qrCodeScanner.current) {
             qrCodeScanner.current = new Html5Qrcode(qrRegionId);
         }
@@ -29,7 +41,7 @@ export default function Scanner() {
                         setOpenDialog(true);
                     },
                     (error) => {
-                        // Puedes ignorar errores frecuentes
+                        // Errores de lectura frecuentes pueden ignorarse
                     }
                 );
                 isRunning.current = true;
@@ -37,19 +49,7 @@ export default function Scanner() {
                 console.error("Error al iniciar escáner:", err);
             }
         }
-    };
-
-    const detenerScanner = async () => {
-        if (qrCodeScanner.current && isRunning.current) {
-            try {
-                await qrCodeScanner.current.stop();
-                await qrCodeScanner.current.clear();
-                isRunning.current = false;
-            } catch (err) {
-                console.warn("Error al detener escáner:", err);
-            }
-        }
-    };
+    }, [detenerScanner]);
 
     const manejarCerrarDialogo = () => {
         setOpenDialog(false);
@@ -62,7 +62,7 @@ export default function Scanner() {
         return () => {
             detenerScanner(); // Limpiar cámara al desmontar componente
         };
-    }, []);
+    }, [iniciarScanner, detenerScanner]);
 
     return (
         <Box
@@ -72,7 +72,6 @@ export default function Scanner() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 minHeight: '100vh',
-                // backgroundColor: '#f0f2f5',
             }}
         >
             <Typography variant="h6" gutterBottom>
@@ -95,7 +94,7 @@ export default function Scanner() {
                         height: '100%',
                     },
                     '& canvas': {
-                        display: 'none', // si lo genera y no lo necesitas
+                        display: 'none',
                     },
                 }}
             />
