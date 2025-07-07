@@ -40,7 +40,7 @@ export default function Scanner() {
 
                         fetch(`https://power11-form.onrender.com/api/registro/verificar/${decodedText}`, {
                             headers: {
-                                'x-app-secret': 'tu-secreto-aqui'
+                                'x-app-secret': 'un-secreto-muy-fuerte-que-no-vas-a-compartir'
                             }
                         })
                             .then(res => res.text())
@@ -49,7 +49,7 @@ export default function Scanner() {
                                 setOpenDialog(true);
                             })
                             .catch(err => {
-                                setResultado('<p>Error al verificar el QR. Intenta nuevamente.</p>');
+                                setResultado('Error al verificar el QR. Intenta nuevamente.');
                                 setOpenDialog(true);
                                 console.error(err);
                             });
