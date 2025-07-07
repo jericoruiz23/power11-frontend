@@ -53,7 +53,7 @@ export default function Insights() {
             </Typography>
             <Grid container spacing={3}>
                 {cards.map((card, i) => (
-                    <Grid item xs={12} sm={6} md={3} key={i}>
+                    <Grid item xs={12} sm={12} md={3} key={i}>
                         <Card
                             sx={{
                                 backgroundColor: card.color,
