@@ -24,7 +24,15 @@ export default function Form() {
         cargo: '',
         opcion: '',
     });
-
+    const empresas = [
+        { id: '1', nombre: 'COMWARE' },
+        { id: '2', nombre: 'TECSINFO' },
+        { id: '3', nombre: 'SOFTCONSULTING' },
+        { id: '4', nombre: 'SIFUTURO' },
+        { id: '5', nombre: 'MEGASETEC' },
+        { id: '6', nombre: 'IOTWARE' },
+        { id: '7', nombre: 'BAYTEQ' },
+    ];
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(false);
 
@@ -200,23 +208,22 @@ export default function Form() {
                     />
 
                     <FormControl fullWidth margin="normal" required>
-                        <InputLabel id="select-label">Seleccione una opción</InputLabel>
+                        <InputLabel id="empresa-label">Empresa</InputLabel>
                         <Select
-                            labelId="select-label"
-                            id="select-opcion"
-                            name="opcion"
-                            value={form.opcion}
-                            label="Seleccione una opción"
+                            labelId="empresa-label"
+                            name="empresa"
+                            value={form.empresa}
+                            label="Empresa"
                             onChange={handleChange}
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="opcion1">Opción 1</MenuItem>
-                            <MenuItem value="opcion2">Opción 2</MenuItem>
-                            <MenuItem value="opcion3">Opción 3</MenuItem>
+                            {empresas.map((empresa) => (
+                                <MenuItem key={empresa.id} value={empresa.nombre}>
+                                    {empresa.nombre}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
+
 
                     <Box mt={2} display="flex" justifyContent="center">
                         <Button variant="outlined" type="submit" disabled={cargando}>

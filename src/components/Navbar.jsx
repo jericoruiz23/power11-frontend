@@ -31,6 +31,19 @@ export default function Navbar() {
             <Box
                 sx={{
                     position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '16px',
+                    zIndex: 1200,  // menos que el navbar (1300)
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(14px)',
+                    WebkitBackdropFilter: 'blur(14px)',
+                }}
+            />
+            <Box
+                sx={{
+                    position: 'fixed',
                     top: 16,
                     left: '50%',
                     transform: 'translateX(-50%)',
@@ -43,8 +56,8 @@ export default function Navbar() {
                     elevation={3}
                     sx={{
                         borderRadius: '20px',
-                        background: 'rgba(0, 47, 255, 0.85)',
-                        backdropFilter: 'blur(14px)',
+                        background: 'rgba(0, 47, 255, 0.87)',
+                        backdropFilter: 'blur(10px)',
                         WebkitBackdropFilter: 'blur(14px)',
                         border: '1px solid rgba(255, 255, 255, 0.2)',
                     }}
@@ -138,6 +151,7 @@ export default function Navbar() {
                     </Toolbar>
                 </Paper>
             </Box>
+
 
             {/* ESPACIADOR para evitar solapamiento */}
             <Box sx={{ height: '80px' }} />

@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Typography, Grid, CircularProgress } from '@mui/material';
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    Grid,
+    CircularProgress,
+} from '@mui/material';
+
+import Widget from './Widget1'
+import Widget2 from './Widget2'
 
 export default function Insights() {
     const [data, setData] = useState(null);
@@ -40,39 +50,49 @@ export default function Insights() {
     }
 
     const cards = [
-        { label: 'Registrados Totales', value: data.totalRegistrados, color: '#1976d2' },
-        { label: 'Asistentes', value: data.totalAsistentes, color: '#2e7d32' },
-        { label: 'Porcentaje de Asistencia', value: `${data.porcentajeAsistencia}%`, color: '#f57c00' },
-        { label: 'Asistentes Nuevos', value: data.nuevosAsistentes, color: '#6a1b9a' },
+        { label: 'Registrados Totales', value: data.totalRegistrados },
+        { label: 'Asistentes', value: data.totalAsistentes },
+        { label: 'Porcentaje de Asistencia', value: `${data.porcentajeAsistencia}%` },
+        { label: 'Asistentes Nuevos', value: data.nuevosAsistentes },
     ];
 
     return (
-        <Box p={3}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom textAlign="center">
+        <Box p={{ xs: 2, md: 4 }}>
+            <Typography
+                variant="h4"
+                fontWeight="bold"
+                gutterBottom
+                textAlign="center"
+                sx={{ fontFamily: 'Arial, sans-serif' }}
+            >
                 Insights del Evento
             </Typography>
+
             <Grid container spacing={3}>
-                {cards.map((card, i) => (
-                    <Grid item xs={12} sm={12} md={3} key={i}>
-                        <Card
-                            sx={{
-                                backgroundColor: card.color,
-                                color: '#fff',
-                                borderRadius: 3,
-                                boxShadow: 3,
-                                textAlign: 'center',
-                                p: 2,
-                            }}
-                        >
+                {cards.map((card, index) => (
+                    <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Card sx={{ height: '100%' }}>
                             <CardContent>
-                                <Typography variant="h6">{card.label}</Typography>
-                                <Typography variant="h4" fontWeight="bold">
+                                <Typography variant="subtitle2" color="textSecondary" gutterBottom>
+                                    {card.label}
+                                </Typography>
+                                <Typography
+                                    variant="h5"
+                                    fontWeight="bold"
+                                    color="primary"
+                                    sx={{ mt: 1 }}
+                                >
                                     {card.value}
                                 </Typography>
                             </CardContent>
                         </Card>
                     </Grid>
                 ))}
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+            <Widget/>
+            <Widget2/>
+
             </Grid>
         </Box>
     );
