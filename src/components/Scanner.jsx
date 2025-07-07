@@ -36,23 +36,43 @@ export default function Scanner() {
                         qrbox: { width: 250, height: 250 }
                     },
                     (decodedText) => {
+                        console.log("✅ QR detectado:", decodedText);
                         detenerScanner();
 
-                        fetch(`https://power11-form.onrender.com/api/registro/verificar/${decodedText}`, {
+                        let token = decodedText;
+
+                        if (decodedText.startsWith("http")) {
+                            try {
+                                const url = new URL(decodedText);
+                                token = url.pathname.split("/").pop();
+                                console.log("🎯 Token extraído:", token);
+                            } catch (err) {
+                                console.error("QR mal formado:", decodedText);
+                                setResultado("⚠️ Código QR no válido.");
+                                setOpenDialog(true);
+                                return;
+                            }
+                        }
+
+                        const endpoint = `https://power11-form.onrender.com/api/registro/verificar/${token}`;
+                        console.log("📡 Consultando:", endpoint);
+
+                        fetch(endpoint, {
                             headers: {
                                 'x-app-secret': 'un-secreto-muy-fuerte-que-no-vas-a-compartir'
-                                
                             }
                         })
                             .then(res => res.text())
                             .then(html => {
+                                console.log("📥 Respuesta recibida:");
+                                console.log(html);
                                 setResultado(html);
                                 setOpenDialog(true);
                             })
                             .catch(err => {
+                                console.error("❌ Error en fetch:", err);
                                 setResultado('Error al verificar el QR. Intenta nuevamente.');
                                 setOpenDialog(true);
-                                console.error(err);
                             });
                     },
                     (error) => {
@@ -66,17 +86,16 @@ export default function Scanner() {
         }
     }, [detenerScanner]);
 
-
     const manejarCerrarDialogo = () => {
+        console.log("🔄 Reiniciando escaneo");
         setOpenDialog(false);
-        iniciarScanner(); // Reinicia escaneo al cerrar el resultado
+        iniciarScanner();
     };
 
     useEffect(() => {
         iniciarScanner();
-
         return () => {
-            detenerScanner(); // Limpiar cámara al desmontar componente
+            detenerScanner();
         };
     }, [iniciarScanner, detenerScanner]);
 
@@ -119,12 +138,15 @@ export default function Scanner() {
                 open={openDialog}
                 onClose={manejarCerrarDialogo}
                 aria-labelledby="resultado-qr"
+                maxWidth="md"
+                fullWidth
             >
-                <DialogTitle id="resultado-qr">Código QR Detectado</DialogTitle>
+                <DialogTitle id="resultado-qr">Resultado del Escaneo</DialogTitle>
                 <DialogContent>
-                    <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>
-                        {resultado}
-                    </Typography>
+                    <Box
+                        sx={{ wordBreak: 'break-word' }}
+                        dangerouslySetInnerHTML={{ __html: resultado }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={manejarCerrarDialogo} variant="contained" color="primary">
