@@ -41,6 +41,7 @@ export default function Scanner() {
                         fetch(`https://power11-form.onrender.com/api/registro/verificar/${decodedText}`, {
                             headers: {
                                 'x-app-secret': 'un-secreto-muy-fuerte-que-no-vas-a-compartir'
+                                
                             }
                         })
                             .then(res => res.text())
