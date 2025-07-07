@@ -36,12 +36,26 @@ export default function Scanner() {
                         qrbox: { width: 250, height: 250 }
                     },
                     (decodedText) => {
-                        detenerScanner(); // Detener inmediatamente al detectar
-                        setResultado(decodedText);
-                        setOpenDialog(true);
+                        detenerScanner();
+
+                        fetch(`https://tuapi.com/verificar/${decodedText}`, {
+                            headers: {
+                                'x-app-secret': 'tu-secreto-aqui'
+                            }
+                        })
+                            .then(res => res.text())
+                            .then(html => {
+                                setResultado(html);
+                                setOpenDialog(true);
+                            })
+                            .catch(err => {
+                                setResultado('<p>Error al verificar el QR. Intenta nuevamente.</p>');
+                                setOpenDialog(true);
+                                console.error(err);
+                            });
                     },
                     (error) => {
-                        // Errores de lectura frecuentes pueden ignorarse
+                        // errores frecuentes pueden ignorarse
                     }
                 );
                 isRunning.current = true;
@@ -50,6 +64,7 @@ export default function Scanner() {
             }
         }
     }, [detenerScanner]);
+
 
     const manejarCerrarDialogo = () => {
         setOpenDialog(false);
