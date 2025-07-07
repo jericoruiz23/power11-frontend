@@ -72,7 +72,7 @@ export default function Scanner() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 minHeight: '100vh',
-                backgroundColor: '#f0f2f5',
+                // backgroundColor: '#f0f2f5',
             }}
         >
             <Typography variant="h6" gutterBottom>
