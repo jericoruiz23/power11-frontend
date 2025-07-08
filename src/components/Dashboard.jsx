@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/material/Drawer';
 import { CheckCircle, Cancel, MoreVert } from '@mui/icons-material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,11 +20,8 @@ export default function DashboardRegistros() {
     const [qrDialogOpen, setQrDialogOpen] = useState(false);
     const [qrImage, setQrImage] = useState('');
     const [enviando, setEnviando] = useState(false);
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
     const theme = useTheme();
     const esMovil = useMediaQuery(theme.breakpoints.down('sm'));
-
     const [menuAnchorEl, setMenuAnchorEl] = useState(null); // nuevo estado para el menú
 
     const abrirMenu = (event) => {

@@ -75,7 +75,13 @@ export default function Navbar() {
                                 <img
                                     src={logo}
                                     alt="Logo"
-                                    style={{ height: 36, marginLeft: '1rem', marginRight: 16, cursor: 'pointer' }}
+                                    style={{
+                                        height: 36,
+                                        marginLeft: '1rem',
+                                        marginRight: 16,
+                                        marginTop: 3.5,  // 🔽 Baja un poco el logo
+                                        cursor: 'pointer',
+                                    }}
                                 />
                             </RouterLink>
                         </Box>

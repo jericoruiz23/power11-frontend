@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    Grid,
-    CircularProgress,
-} from '@mui/material';
-
-import Widget from './Widget1'
-import Widget2 from './Widget2'
+import { Box, Typography, CircularProgress } from '@mui/material';
+import { CWidgetStatsB } from '@coreui/react';
 
 export default function Insights() {
     const [data, setData] = useState(null);
@@ -27,7 +18,6 @@ export default function Insights() {
                 setCargando(false);
             }
         };
-
         obtenerDatos();
     }, []);
 
@@ -49,15 +39,8 @@ export default function Insights() {
         );
     }
 
-    const cards = [
-        { label: 'Registrados Totales', value: data.totalRegistrados },
-        { label: 'Asistentes', value: data.totalAsistentes },
-        { label: 'Porcentaje de Asistencia', value: `${data.porcentajeAsistencia}%` },
-        { label: 'Asistentes Nuevos', value: data.nuevosAsistentes },
-    ];
-
     return (
-        <Box p={{ xs: 2, md: 4 }}>
+        <Box p={{ xs: 2, md: 4 }} mt={-2}>
             <Typography
                 variant="h4"
                 fontWeight="bold"
@@ -67,11 +50,87 @@ export default function Insights() {
             >
                 Estadísticas
             </Typography>
-            <Grid item xs={12} sm={6} md={3}>
-                <Widget />
-                {/* <Widget2 /> */}
 
-            </Grid>
+            {/* Contenedor flex para todos los widgets */}
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    justifyContent: 'flex-start',
+                    marginTop: 2,
+                }}
+            >
+                {/* Widget 1 */}
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '48%' }, // 1 por fila móvil, 2 por fila escritorio
+                        height: 180,
+                    }}
+                >
+                    <CWidgetStatsB
+                        className="mb-4 custom-progress-blue"
+                        progress={{ value: 60 }}
+                        text="Usuarios nuevos"
+                        title="Progreso del día"
+                        value="73.2%"
+                        style={{ height: '100%' }}
+                    />
+                </Box>
+
+                {/* Widget 2 */}
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '48%' },
+                        height: 180,
+                    }}
+                >
+                    <CWidgetStatsB
+                        className="mb-4 custom-inverse-blue"
+                        inverse
+                        progress={{ value: 60 }}
+                        text="Usuarios que ingresaron"
+                        title="Porcentaje asistentes"
+                        value="73.2%"
+                        style={{ height: '100%' }}
+                    />
+                </Box>
+
+                {/* Widget 3 */}
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '48%' },
+                        height: 180,
+                    }}
+                >
+                    <CWidgetStatsB
+                        className="mb-4 custom-inverse-blue"
+                        inverse
+                        progress={{ value: 60 }}
+                        text="Usuarios que ingresaron"
+                        title="Porcentaje asistentes"
+                        value="73.2%"
+                        style={{ height: '100%' }}
+                    />
+                </Box>
+
+                {/* Widget 4 */}
+                <Box
+                    sx={{
+                        width: { xs: '100%', md: '48%' },
+                        height: 180,
+                    }}
+                >
+                    <CWidgetStatsB
+                        className="mb-4 custom-progress-blue"
+                        progress={{ value: 60 }}
+                        text="Usuarios nuevos"
+                        title="Progreso del día"
+                        value="73.2%"
+                        style={{ height: '100%' }}
+                    />
+                </Box>
+            </Box>
         </Box>
     );
 }

@@ -30,14 +30,23 @@ code {
 }
 
 .custom-progress-blue {
+  background-color: white !important;
   border: 1px solid rgba(0, 47, 255, 0.87) !important;
-  border-radius: 0.01rem;
-  /* opcional, para que se vea suave */
+  color: rgba(0, 47, 255, 0.87) !important;
+  border-radius: 0.25rem !important;
 }
 
+/* El texto interno */
+.custom-progress-blue .text-medium-emphasis,
+.custom-progress-blue .text-high-emphasis {
+  color: rgba(0, 47, 255, 0.87) !important;
+}
+
+/* La barra de progreso */
 .custom-progress-blue .progress-bar {
   background-color: rgba(0, 47, 255, 0.87) !important;
 }
+
 
 .custom-inverse-blue {
   background-color: rgba(0, 47, 255, 0.87) !important;
