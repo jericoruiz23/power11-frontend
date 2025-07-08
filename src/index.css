@@ -20,11 +20,36 @@ body::before {
   filter: blur(3px);
   /* 👈 desenfoque aplicado */
   z-index: 1;
-  
+
   pointer-events: none;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.custom-progress-blue {
+  border: 1px solid rgba(0, 47, 255, 0.87) !important;
+  border-radius: 0.01rem;
+  /* opcional, para que se vea suave */
+}
+
+.custom-progress-blue .progress-bar {
+  background-color: rgba(0, 47, 255, 0.87) !important;
+}
+
+.custom-inverse-blue {
+  background-color: rgba(0, 47, 255, 0.87) !important;
+  color: #fff !important;
+  border: none;
+}
+
+.custom-inverse-blue .progress-bar {
+  background-color: #ffffff !important;
+}
+
+.custom-inverse-blue .text-medium-emphasis,
+.custom-inverse-blue .text-high-emphasis {
+  color: #ffffff !important;
 }

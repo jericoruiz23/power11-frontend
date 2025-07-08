@@ -65,11 +65,11 @@ export default function Insights() {
                 textAlign="center"
                 sx={{ fontFamily: 'Arial, sans-serif' }}
             >
-                Insights del Evento
+                Estadísticas
             </Typography>
             <Grid item xs={12} sm={6} md={3}>
                 <Widget />
-                <Widget2 />
+                {/* <Widget2 /> */}
 
             </Grid>
         </Box>
