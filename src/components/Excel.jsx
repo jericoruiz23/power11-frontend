@@ -9,7 +9,7 @@ const Excel = () => {
   const [duplicadosCedula, setDuplicadosCedula] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState('');
-
+  
   const contarDuplicados = (data, campo) => {
     const conteo = new Map();
 
@@ -87,6 +87,7 @@ const Excel = () => {
             cedula: fila['CEDULA'],
             empresa: fila['EMPRESA'],
             cargo: fila['CARGO'],
+            partner: fila['PARTNER']
           }))
         ),
       });

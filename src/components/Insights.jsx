@@ -67,33 +67,31 @@ export default function Insights() {
                     marginTop: 4,
                 }}
             >
-                {/* Widget 1: Total Registrados */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
+                {/* Widget 2: Total Asistentes (barra proporcional al total esperado) */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:1, mb:-2 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-progress-blue"
-                        progress={{ value: 100 }}
-                        text="Forms"
-                        title="Total Registrados"
-                        value={`${data.totalRegistrados}`}
-                        style={{ height: '100%' }}
-                    />
-                </Box>
-
-                {/* Widget 2: Total Asistentes (barra proporcional al total esperado) */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
-                    <CWidgetStatsB
-                        className="mb-4 custom-inverse-blue"
-                        inverse
                         progress={{ value: progresoAsistentes }}
                         text={`De un total esperado de ${totalEsperado}`}
                         title="Total Asistentes"
                         value={`${data.totalAsistentes}`}
-                        style={{ height: '100%' }}
+                        style={{ height: '80%' }}
                     />
                 </Box>
-
+                {/* Widget 1: Total Registrados */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:1 }}>
+                    <CWidgetStatsB
+                        className="mb-4 custom-inverse-blue"
+                        inverse
+                        progress={{ value: 100 }}
+                        text="Forms"
+                        title="Total Registrados"
+                        value={`${data.totalRegistrados}`}
+                        style={{ height: '80%' }}
+                    />
+                </Box>
                 {/* Widget 3: Porcentaje asistencia */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
+                <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180 , mt:-2}}>
                     <CWidgetStatsB
                         className="mb-4 custom-inverse-blue"
                         inverse
@@ -101,19 +99,19 @@ export default function Insights() {
                         text="Porcentaje asistencia"
                         title="Porcentaje asistencia"
                         value={`${data.porcentajeAsistencia}%`}
-                        style={{ height: '100%' }}
+                        style={{ height: '80%' }}
                     />
                 </Box>
 
                 {/* Widget 4: Registros Nuevos */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
+                <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180, mt:-2  }}>
                     <CWidgetStatsB
                         className="mb-4 custom-progress-blue"
                         progress={{ value: data.nuevos === 0 ? 0 : 100 }}
-                        text="Registros Nuevos"
+                        text="Registro manual"
                         title="Registros Nuevos"
                         value={`${data.nuevos}`}
-                        style={{ height: '100%' }}
+                        style={{ height: '80%' }}
                     />
                 </Box>
             </Box>

@@ -162,7 +162,7 @@ export default function DashboardRegistros() {
         { field: 'email', headerName: 'Email', flex: 1.3 },
         { field: 'cedula', headerName: 'Cédula', flex: .6 },
         { field: 'cargo', headerName: 'Cargo', flex: .8 },
-        { field: 'partner', headerName: 'BP', flex: .8 },
+        { field: 'partner', headerName: 'B Partner', flex: .8 },
         {
             field: 'correoEnviado',
             headerName: 'QR Enviado',

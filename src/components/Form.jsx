@@ -76,6 +76,7 @@ export default function Form() {
                     cedula: '',
                     empresa: '',
                     cargo: '',
+                    partner: '',
                     opcion: '',
                 });
             } else {
@@ -188,15 +189,16 @@ export default function Form() {
                             label="Celular"
                             name="celular"
                             value={form.celular}
-                            onChange={handleChange}
-                            onKeyPress={(e) => {
-                                if (!/^\d$/.test(e.key)) {
-                                    e.preventDefault();
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d*$/.test(value) && value.length <= 10) {
+                                    setForm({ ...form, celular: value });
                                 }
                             }}
                             fullWidth
                             required
                         />
+
 
                         <TextField
                             label="Empresa"

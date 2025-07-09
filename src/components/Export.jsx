@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const ExportarCSV = ({ tablaData = [], enviando = false, asMenuItem = false }) => {
-    const columnasExportadas = ['nombre', 'empresa', 'email', 'cedula', 'cargo'];
+    const columnasExportadas = ['nombre', 'empresa', 'email', 'cedula', 'cargo', 'partner'];
 
     const handleExportarCSV = () => {
         if (!Array.isArray(tablaData) || tablaData.length === 0) {
