@@ -32,6 +32,9 @@ export default function Form() {
         { id: '5', nombre: 'MEGASETEC' },
         { id: '6', nombre: 'IOTWARE' },
         { id: '7', nombre: 'BAYTEQ' },
+        { id: '8', nombre: 'REDSIS' },
+        { id: '9', nombre: 'ADVANCE NETWORKS' },
+        { id: '10', nombre: 'IOTWARE' },
     ];
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(false);
@@ -208,12 +211,12 @@ export default function Form() {
                     />
 
                     <FormControl fullWidth margin="normal" required>
-                        <InputLabel id="empresa-label">Empresa</InputLabel>
+                        <InputLabel id="empresa-label">Partner Responsable</InputLabel>
                         <Select
                             labelId="empresa-label"
-                            name="empresa"
-                            value={form.empresa}
-                            label="Empresa"
+                            name="partner"
+                            value={form.partner}
+                            label="Partner Responsable"
                             onChange={handleChange}
                         >
                             {empresas.map((empresa) => (
