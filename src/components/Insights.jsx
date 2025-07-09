@@ -39,6 +39,12 @@ export default function Insights() {
         );
     }
 
+    // Calcular progreso en unidades absolutas
+    const totalEsperado = data.totalRegistrados + data.nuevos;
+    const progresoAsistentes = totalEsperado > 0
+        ? Math.round((data.totalAsistentes / totalEsperado) * 100)
+        : 0;
+
     return (
         <Box p={{ xs: 2, md: 4 }} mt={-2}>
             <Typography
@@ -58,75 +64,55 @@ export default function Insights() {
                     flexWrap: 'wrap',
                     gap: 2,
                     justifyContent: 'flex-start',
-                    marginTop: 2,
+                    marginTop: 4,
                 }}
             >
-                {/* Widget 1 */}
-                <Box
-                    sx={{
-                        width: { xs: '100%', md: '48%' }, // 1 por fila móvil, 2 por fila escritorio
-                        height: 180,
-                    }}
-                >
+                {/* Widget 1: Total Registrados */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-progress-blue"
-                        progress={{ value: 60 }}
-                        text="Usuarios nuevos"
-                        title="Progreso del día"
-                        value="73.2%"
+                        progress={{ value: 100 }}
+                        text="Forms"
+                        title="Total Registrados"
+                        value={`${data.totalRegistrados}`}
                         style={{ height: '100%' }}
                     />
                 </Box>
 
-                {/* Widget 2 */}
-                <Box
-                    sx={{
-                        width: { xs: '100%', md: '48%' },
-                        height: 180,
-                    }}
-                >
+                {/* Widget 2: Total Asistentes (barra proporcional al total esperado) */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-inverse-blue"
                         inverse
-                        progress={{ value: 60 }}
-                        text="Usuarios que ingresaron"
-                        title="Porcentaje asistentes"
-                        value="73.2%"
+                        progress={{ value: progresoAsistentes }}
+                        text={`De un total esperado de ${totalEsperado}`}
+                        title="Total Asistentes"
+                        value={`${data.totalAsistentes}`}
                         style={{ height: '100%' }}
                     />
                 </Box>
 
-                {/* Widget 3 */}
-                <Box
-                    sx={{
-                        width: { xs: '100%', md: '48%' },
-                        height: 180,
-                    }}
-                >
+                {/* Widget 3: Porcentaje asistencia */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-inverse-blue"
                         inverse
-                        progress={{ value: 60 }}
-                        text="Usuarios que ingresaron"
-                        title="Porcentaje asistentes"
-                        value="73.2%"
+                        progress={{ value: data.porcentajeAsistencia }}
+                        text="Porcentaje asistencia"
+                        title="Porcentaje asistencia"
+                        value={`${data.porcentajeAsistencia}%`}
                         style={{ height: '100%' }}
                     />
                 </Box>
 
-                {/* Widget 4 */}
-                <Box
-                    sx={{
-                        width: { xs: '100%', md: '48%' },
-                        height: 180,
-                    }}
-                >
+                {/* Widget 4: Registros Nuevos */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-progress-blue"
-                        progress={{ value: 60 }}
-                        text="Usuarios nuevos"
-                        title="Progreso del día"
-                        value="73.2%"
+                        progress={{ value: data.nuevos === 0 ? 0 : 100 }}
+                        text="Registros Nuevos"
+                        title="Registros Nuevos"
+                        value={`${data.nuevos}`}
                         style={{ height: '100%' }}
                     />
                 </Box>
