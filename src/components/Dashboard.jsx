@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Box, TextField, useMediaQuery, useTheme, IconButton, Menu, MenuItem, Button, Typography, DialogContent, DialogTitle, Dialog, DialogActions
+    Box, TextField, useMediaQuery, useTheme, IconButton, Menu, MenuItem, Button, Typography, DialogContent, DialogTitle, Dialog, DialogActions, CircularProgress 
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -104,13 +104,13 @@ export default function DashboardRegistros() {
             const data = await response.json();
 
             if (response.ok) {
-                toast.success(`✅ ${data.mensaje}`);
+                toast.success(`${data.mensaje}`);
             } else {
-                toast.error(`❌ ${data.error || 'No se pudo enviar los correos.'}`);
+                toast.error(`${data.error || 'No se pudo enviar los correos.'}`);
             }
         } catch (error) {
             console.error('Error en el envío masivo:', error);
-            toast.error(`❌ ${error.message || 'Error al enviar los QR.'}`);
+            toast.error(`${error.message || 'Error al enviar los QR.'}`);
         } finally {
             setEnviando(false);
         }
@@ -368,6 +368,28 @@ export default function DashboardRegistros() {
             </Dialog>
 
             <ToastContainer position="bottom-left" autoClose={4000} />
+            {enviando && (
+                <Box
+                    position="fixed"
+                    top={0}
+                    left={0}
+                    width="100vw"
+                    height="100vh"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgcolor="rgba(255, 255, 255, 0.7)"
+                    zIndex={2000}
+                >
+                    <Box textAlign="center">
+                        <CircularProgress />
+                        <Typography mt={2}>Enviando correos...</Typography>
+                    </Box>
+                </Box>
+            )}
+
         </Box>
+
     );
+
 }
