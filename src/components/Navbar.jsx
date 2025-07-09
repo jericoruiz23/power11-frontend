@@ -13,11 +13,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import logo from './navbar_logo.png';
 
 const navItems = [
-    { text: 'REGISTRO', to: '/registro' },
-    { text: 'REPORTE', to: '/' },
-    { text: 'SUBIR EXCEL', to: '/excel' },
-    { text: 'SCANNER QR', to: '/qrscanner' },
-    { text: 'DASHBOARD', to: '/insights' },
+    { text: 'Registro', to: '/registro' },
+    { text: 'Reporte', to: '/' },
+    { text: 'Upload', to: '/excel' },
+    { text: 'Scanner', to: '/qrscanner' },
+    { text: 'Dashboard', to: '/insights' },
 ];
 
 export default function Navbar() {

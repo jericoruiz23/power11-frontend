@@ -155,13 +155,14 @@ export default function DashboardRegistros() {
 
     const columnasBase = [
         { field: 'nombre', headerName: 'Nombre', flex: .8 },
-        { field: 'empresa', headerName: 'Empresa', flex: .9 },
+        { field: 'empresa', headerName: 'Empresa', flex: .7 },
     ];
 
     const columnasExtras = [
         { field: 'email', headerName: 'Email', flex: 1.3 },
         { field: 'cedula', headerName: 'Cédula', flex: .6 },
         { field: 'cargo', headerName: 'Cargo', flex: .8 },
+        { field: 'partner', headerName: 'BP', flex: .8 },
         {
             field: 'correoEnviado',
             headerName: 'QR Enviado',
@@ -229,6 +230,7 @@ export default function DashboardRegistros() {
             r.cedula?.toLowerCase().includes(texto) ||
             r.empresa?.toLowerCase().includes(texto) ||
             r.cargo?.toLowerCase().includes(texto) ||
+            r.partner?.toLowerCase().includes(texto) ||
             r.estado?.toLowerCase().includes(texto)
         );
     });

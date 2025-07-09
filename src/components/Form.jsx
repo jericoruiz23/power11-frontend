@@ -35,6 +35,7 @@ export default function Form() {
         { id: '8', nombre: 'REDSIS' },
         { id: '9', nombre: 'ADVANCE NETWORKS' },
         { id: '10', nombre: 'IOTWARE' },
+        { id: '11', nombre: 'NEXSYS' },
     ];
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(false);
@@ -90,7 +91,7 @@ export default function Form() {
 
     return (
         <>
-            <Box
+            {/* <Box
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -120,22 +121,62 @@ export default function Form() {
                     alt="Logo IBM"
                     sx={{ height: { xs: 28, sm: 36, md: 40 }, flexShrink: 0 }}
                 />
-            </Box>
+            </Box> */}
 
             <Box p={3} maxWidth={500} mx="auto">
-                <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif', marginTop: -2 }}>
+                <Typography variant="h4" gutterBottom align="center" fontWeight="bold" sx={{ fontFamily: 'Arial, sans-serif', marginTop: -2, marginBottom: 3 }}>
                     REGISTRO
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <Box display="flex" gap={2} mb={.5}>
+                    <Box display="flex" flexDirection="column" gap={2}>
+                        <Box display="flex" gap={2}>
+                            <TextField
+                                label="Nombre"
+                                name="nombre"
+                                value={form.nombre}
+                                onChange={handleChange}
+                                onKeyPress={(e) => {
+                                    const key = e.key;
+                                    if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                fullWidth
+                                required
+                            />
+                            <TextField
+                                label="Apellido"
+                                name="apellido"
+                                value={form.apellido}
+                                onChange={handleChange}
+                                onKeyPress={(e) => {
+                                    const key = e.key;
+                                    if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                fullWidth
+                                required
+                            />
+                        </Box>
+
                         <TextField
-                            label="Nombre"
-                            name="nombre"
-                            value={form.nombre}
+                            label="Email"
+                            name="email"
+                            type="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            fullWidth
+                            required
+                        />
+
+                        <TextField
+                            label="Cédula"
+                            name="cedula"
+                            value={form.cedula}
                             onChange={handleChange}
                             onKeyPress={(e) => {
-                                const key = e.key;
-                                if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                if (!/^\d$/.test(e.key)) {
                                     e.preventDefault();
                                 }
                             }}
@@ -144,96 +185,68 @@ export default function Form() {
                         />
 
                         <TextField
-                            label="Apellido"
-                            name="apellido"
-                            value={form.apellido}
+                            label="Celular"
+                            name="celular"
+                            value={form.celular}
                             onChange={handleChange}
                             onKeyPress={(e) => {
-                                const key = e.key;
-                                if (!/^[a-zA-ZñÑ\sáéíóúÁÉÍÓÚ]$/.test(key)) {
+                                if (!/^\d$/.test(e.key)) {
                                     e.preventDefault();
                                 }
                             }}
                             fullWidth
                             required
                         />
-                    </Box>
 
-                    <TextField
-                        label="Email"
-                        name="email"
-                        type="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        required
-                    />
-
-                    <TextField
-                        label="Cédula"
-                        name="cedula"
-                        value={form.cedula}
-                        onChange={handleChange}
-                        onKeyPress={(e) => {
-                            if (!/^\d$/.test(e.key)) {
-                                e.preventDefault();
-                            }
-                        }}
-                        fullWidth
-                        margin="normal"
-                        required
-                    />
-
-                    <TextField
-                        label="Empresa"
-                        name="empresa"
-                        value={form.empresa}
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        required
-                    />
-
-                    <TextField
-                        label="Cargo"
-                        name="cargo"
-                        value={form.cargo}
-                        onChange={handleChange}
-                        onKeyPress={(e) => {
-                            if (!/^[a-zA-Z\s]*$/.test(e.key)) {
-                                e.preventDefault();
-                            }
-                        }}
-                        fullWidth
-                        margin="normal"
-                        required
-                    />
-
-                    <FormControl fullWidth margin="normal" required>
-                        <InputLabel id="empresa-label">Partner Responsable</InputLabel>
-                        <Select
-                            labelId="empresa-label"
-                            name="partner"
-                            value={form.partner}
-                            label="Partner Responsable"
+                        <TextField
+                            label="Empresa"
+                            name="empresa"
+                            value={form.empresa}
                             onChange={handleChange}
-                        >
-                            {empresas.map((empresa) => (
-                                <MenuItem key={empresa.id} value={empresa.nombre}>
-                                    {empresa.nombre}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                            fullWidth
+                            required
+                        />
 
+                        <TextField
+                            label="Cargo"
+                            name="cargo"
+                            value={form.cargo}
+                            onChange={handleChange}
+                            onKeyPress={(e) => {
+                                if (!/^[a-zA-Z\s]*$/.test(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            fullWidth
+                            required
+                        />
 
-                    <Box mt={2} display="flex" justifyContent="center">
-                        <Button variant="outlined" type="submit" disabled={cargando}>
-                            {cargando ? <CircularProgress size={24} /> : 'Registrar'}
-                        </Button>
+                        <FormControl fullWidth required>
+                            <InputLabel id="empresa-label">Partner Responsable</InputLabel>
+                            <Select
+                                labelId="empresa-label"
+                                name="partner"
+                                value={form.partner}
+                                label="Partner Responsable"
+                                onChange={handleChange}
+                            >
+                                {empresas.map((empresa) => (
+                                    <MenuItem key={empresa.id} value={empresa.nombre}>
+                                        {empresa.nombre}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <Box mt={2} display="flex" justifyContent="center">
+                            <Button variant="outlined" type="submit" disabled={cargando}>
+                                {cargando ? <CircularProgress size={24} /> : 'Registrar'}
+                            </Button>
+                        </Box>
                     </Box>
                 </form>
+
+
 
                 {mensaje && (
                     <Box mt={2}>
