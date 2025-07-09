@@ -53,7 +53,6 @@ export default function Scanner() {
                         }
 
                         const endpoint = `https://power11-form.onrender.com/api/registro/verificar/${token}`;
-                        console.log("📡 Consultando:", endpoint);
 
                         fetch(endpoint, {
                             headers: {
@@ -62,22 +61,7 @@ export default function Scanner() {
                         })
                             .then(res => res.text())
                             .then(html => {
-                                const tempDiv = document.createElement('div');
-                                tempDiv.innerHTML = html;
-
-                                const p = tempDiv.querySelector('p');
-                                if (p) {
-                                    const fechaTexto = p.textContent.match(/\d{2}:\d{2}/); // Extrae la hora tipo "13:45"
-                                    if (fechaTexto) {
-                                        p.textContent = `Hora de activación: ${fechaTexto[0]}`;
-                                        setResultado(p.outerHTML);
-                                    } else {
-                                        setResultado(html); // fallback
-                                    }
-                                } else {
-                                    setResultado(html); // fallback
-                                }
-
+                                setResultado(html);
                                 setOpenDialog(true);
                             })
                             .catch(err => {
@@ -85,98 +69,97 @@ export default function Scanner() {
                                 setResultado('Error al verificar el QR. Intenta nuevamente.');
                                 setOpenDialog(true);
                             });
-            },
-            (error) => {
-                // errores frecuentes pueden ignorarse
-            }
+                    },
+                    (error) => {
+                        // errores frecuentes pueden ignorarse
+                    }
                 );
-    isRunning.current = true;
-} catch (err) {
-    console.error("Error al iniciar escáner:", err);
-}
+                isRunning.current = true;
+            } catch (err) {
+                console.error("Error al iniciar escáner:", err);
+            }
         }
     }, [detenerScanner]);
 
-const manejarCerrarDialogo = () => {
-    console.log("🔄 Reiniciando escaneo");
-    setOpenDialog(false);
-    iniciarScanner();
-};
-
-useEffect(() => {
-    iniciarScanner();
-    return () => {
-        detenerScanner();
+    const manejarCerrarDialogo = () => {
+        setOpenDialog(false);
+        iniciarScanner();
     };
-}, [iniciarScanner, detenerScanner]);
 
-return (
-    <Box
-        sx={{
-            p: 3,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: '100vh',
-        }}
-    >
-        <Typography variant="h6" gutterBottom>
-            Escanea el código QR
-        </Typography>
+    useEffect(() => {
+        iniciarScanner();
+        return () => {
+            detenerScanner();
+        };
+    }, [iniciarScanner, detenerScanner]);
 
+    return (
         <Box
-            id={qrRegionId}
             sx={{
-                width: '100%',
-                maxWidth: 500,
-                height: '60vh',
-                border: '2px dashed #1976d2',
-                borderRadius: 2,
-                backgroundColor: '#f5f5f5',
-                mt: 2,
-                '& video': {
-                    objectFit: 'cover',
-                    width: '100%',
-                    height: '100%',
-                },
-                '& canvas': {
-                    display: 'none',
-                },
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                minHeight: '100vh',
             }}
-        />
-
-        <Dialog
-            open={openDialog}
-            onClose={manejarCerrarDialogo}
-            aria-labelledby="resultado-qr"
-            maxWidth="sm"
-            fullWidth
         >
-            <DialogContent>
-                <div
-                    dangerouslySetInnerHTML={{ __html: resultado }}
-                    style={{
-                        fontSize: 16,
-                        color: '#222',
-                        wordBreak: 'break-word',
-                        padding: '12px',
-                        backgroundColor: '#f9f9f9',
-                        borderRadius: '8px',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                        overflowY: 'auto',
-                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                        lineHeight: 1.5,
-                    }}
-                />
-            </DialogContent>
+            <Typography variant="h6" gutterBottom>
+                Escanea el código QR
+            </Typography>
 
-            {/* Aquí centramos el botón */}
-            <DialogActions sx={{ justifyContent: 'center' }}>
-                <Button onClick={manejarCerrarDialogo} variant="outlined" color="primary">
-                    Escanear otro QR
-                </Button>
-            </DialogActions>
-        </Dialog>
-    </Box>
-);
+            <Box
+                id={qrRegionId}
+                sx={{
+                    width: '100%',
+                    maxWidth: 500,
+                    height: '60vh',
+                    border: '2px dashed #1976d2',
+                    borderRadius: 2,
+                    backgroundColor: '#f5f5f5',
+                    mt: 2,
+                    '& video': {
+                        objectFit: 'cover',
+                        width: '100%',
+                        height: '100%',
+                    },
+                    '& canvas': {
+                        display: 'none',
+                    },
+                }}
+            />
+
+            <Dialog
+                open={openDialog}
+                onClose={manejarCerrarDialogo}
+                aria-labelledby="resultado-qr"
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogContent>
+                    <div
+                        dangerouslySetInnerHTML={{ __html: resultado }}
+                        style={{
+                            fontSize: 16,
+                            color: '#222',
+                            wordBreak: 'break-word',
+                            padding: '12px',
+                            backgroundColor: '#f9f9f9',
+                            borderRadius: '8px',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                            overflowY: 'auto',
+                            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                            lineHeight: 1.5,
+                        }}
+                    />
+                </DialogContent>
+
+                {/* Aquí centramos el botón */}
+                <DialogActions sx={{ justifyContent: 'center' }}>
+                    <Button onClick={manejarCerrarDialogo} variant="outlined" color="primary">
+                        Escanear otro QR
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Box>
+    );
 }
