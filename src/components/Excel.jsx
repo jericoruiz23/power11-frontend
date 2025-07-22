@@ -82,10 +82,11 @@ const Excel = () => {
         },
         body: JSON.stringify(
           vistaPrevia.map((fila) => ({
-            nombre: fila['NOMBRE'],
+            nombre: `${fila['NOMBRE'] || ''} ${fila['APELLIDO'] || ''}`.trim(),
             email: fila['EMAIL'],
             cedula: fila['CEDULA'],
             empresa: fila['EMPRESA'],
+            celular: fila['CELULAR'],
             cargo: fila['CARGO'],
             partner: fila['PARTNER']
           }))

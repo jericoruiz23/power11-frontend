@@ -4,35 +4,39 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const ExportarCSV = ({ tablaData = [], enviando = false, asMenuItem = false }) => {
-    const columnasExportadas = ['nombre', 'empresa', 'email', 'cedula', 'cargo', 'partner'];
+    const columnasExportadas = ['nombre', 'empresa', 'email', 'cedula', 'celular', 'cargo', 'partner', 'fechaIngreso', 'estado'];
 
-    const handleExportarCSV = () => {
-        if (!Array.isArray(tablaData) || tablaData.length === 0) {
-            console.warn('No hay datos para exportar');
-            return;
-        }
+    const handleExportarExcel = () => {
+    if (!Array.isArray(tablaData) || tablaData.length === 0) {
+        console.warn('No hay datos para exportar');
+        return;
+    }
 
-        const datosFiltrados = tablaData.map((item) =>
-            columnasExportadas.reduce((obj, key) => {
-                obj[key] = item[key];
-                return obj;
-            }, {})
-        );
+    const datosFiltrados = tablaData.map((item) =>
+        columnasExportadas.reduce((obj, key) => {
+            obj[key] = item[key];
+            return obj;
+        }, {})
+    );
 
-        const worksheet = XLSX.utils.json_to_sheet(datosFiltrados);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
+    const worksheet = XLSX.utils.json_to_sheet(datosFiltrados);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
 
-        const excelBuffer = XLSX.write(workbook, { bookType: 'csv', type: 'array' });
-        const blob = new Blob([excelBuffer], { type: 'text/csv;charset=utf-8;' });
+    // Cambios aquí: xlsx y tipo MIME de Excel
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
-        saveAs(blob, 'datos_exportados.csv');
-    };
+    saveAs(blob, 'Reporte_evento_power11.xlsx');
+};
+
 
     if (asMenuItem) {
         return (
             <Typography
-                onClick={handleExportarCSV}
+                onClick={handleExportarExcel}
                 sx={{
                     cursor: 'pointer',
                     paddingY: 1,
@@ -51,11 +55,11 @@ const ExportarCSV = ({ tablaData = [], enviando = false, asMenuItem = false }) =
     return (
         <Button
             variant="outlined"
-            onClick={handleExportarCSV}
+            onClick={handleExportarExcel}
             disabled={enviando}
             sx={{ '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }, marginRight: 2 }}
         >
-            EXPORTAR CSV
+            EXPORTAR XLSX
         </Button>
     );
 };
