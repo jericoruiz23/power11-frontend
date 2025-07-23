@@ -78,18 +78,7 @@ export default function Insights() {
                         style={{ height: '80%' }}
                     />
                 </Box>
-                {/* Widget 1: Total Registrados */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:1 }}>
-                    <CWidgetStatsB
-                        className="mb-4 custom-inverse-blue"
-                        inverse
-                        progress={{ value: 100 }}
-                        text="Forms"
-                        title="Total Registrados"
-                        value={`${data.totalRegistrados}`}
-                        style={{ height: '80%' }}
-                    />
-                </Box>
+
                 {/* Widget 3: Porcentaje asistencia */}
                 <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180 , mt:-2}}>
                     <CWidgetStatsB
@@ -103,13 +92,27 @@ export default function Insights() {
                     />
                 </Box>
 
+                {/* Widget 1: Total Registrados */}
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:1 }}>
+                    <CWidgetStatsB
+                        className="mb-4 custom-inverse-blue"
+                        inverse
+                        progress={{ value: 100 }}
+                        text="Forms"
+                        title="Registrados"
+                        value={`${data.totalRegistrados}`}
+                        style={{ height: '80%' }}
+                    />
+                </Box>
+                
+
                 {/* Widget 4: Registros Nuevos */}
                 <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180, mt:-2  }}>
                     <CWidgetStatsB
                         className="mb-4 custom-progress-blue"
                         progress={{ value: data.nuevos === 0 ? 0 : 100 }}
-                        text="Registro manual"
-                        title="Registros Nuevos"
+                        text="App"
+                        title="Registros"
                         value={`${data.nuevos}`}
                         style={{ height: '80%' }}
                     />
