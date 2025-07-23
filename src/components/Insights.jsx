@@ -99,7 +99,7 @@ export default function Insights() {
                         inverse
                         progress={{ value: 100 }}
                         text="Forms"
-                        title="Registrados"
+                        title="Registros"
                         value={`${data.totalRegistrados}`}
                         style={{ height: '80%' }}
                     />
