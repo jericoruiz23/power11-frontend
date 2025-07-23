@@ -80,7 +80,7 @@ export default function Insights() {
                 </Box>
 
                 {/* Widget 3: Porcentaje asistencia */}
-                <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180 , mt:-2}}>
+                <Box sx={{ width: { xs: '100%', md: '48%'}, height: 180 , mt:1}}>
                     <CWidgetStatsB
                         className="mb-4 custom-inverse-blue"
                         inverse
@@ -93,7 +93,7 @@ export default function Insights() {
                 </Box>
 
                 {/* Widget 1: Total Registrados */}
-                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:1 }}>
+                <Box sx={{ width: { xs: '100%', md: '48%' }, height: 180 , mt:-2 }}>
                     <CWidgetStatsB
                         className="mb-4 custom-inverse-blue"
                         inverse
